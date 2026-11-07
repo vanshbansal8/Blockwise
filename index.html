@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blockwise | Learn Bitcoin and crypto, with live prices</title>
+<meta name="theme-color" content="#0e1117">
+<meta property="og:type" content="website"><meta property="og:title" content="Blockwise: learn Bitcoin and crypto">
+<meta property="og:description" content="Live prices, a plain-English Bitcoin guide, courses, tools and a scam spotter. Free.">
+<meta name="twitter:card" content="summary">
+<meta name="description" content="Bitcoin explained properly: how it works, who Satoshi is, how halving works. Live prices, courses, tools and a scam spotter.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23f7931a%22/><path d=%22M9 9h8a4 4 0 010 7H9zm0 7h9a4 4 0 010 8H9z%22 fill=%22%230e1117%22/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1117;--p:#161b24;--p2:#1d2430;--ln:#283140;--tx:#e8ebf1;--mu:#8f9bb0;--or:#f7931a;--up:#3ddc97;--dn:#ff6b6b;--r:12px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.6 Manrope,system-ui,sans-serif}
+h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.01em}
+a{color:inherit}button,input{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.w{max-width:1040px;margin:0 auto;padding:0 18px}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+header{position:sticky;top:0;z-index:9;background:rgba(14,17,23,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:20px;text-decoration:none}
+.brand svg{width:28px;height:28px}
+.tick{font-size:13px;color:var(--mu)}.tick b{color:var(--tx)}
+nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+nav a{white-space:nowrap;text-decoration:none;color:var(--mu);font-weight:600;font-size:14px;padding:7px 13px;border-radius:9px}
+nav a.on{background:var(--p2);color:var(--or)}
+main{padding:26px 0 10px}
+h1{font-size:clamp(28px,6vw,42px);font-weight:800}
+h2{font-size:22px;font-weight:800;margin:30px 0 12px}
+.sub{color:var(--mu);max-width:60ch;margin:8px 0 0}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:2fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.cw{position:relative}.tip{position:absolute;top:0;left:0;pointer-events:none;background:var(--p2);border:1px solid var(--ln);border-radius:8px;padding:5px 9px;font-size:12px;display:none;white-space:nowrap;z-index:2}
+.rg{display:flex;gap:6px;margin:4px 0 8px}.rg .pill{padding:4px 12px}.stat .v{font-size:24px;font-weight:800}.stat{padding:14px 16px}
+.star{background:none;border:0;color:var(--or);font-size:20px;padding:0 2px;line-height:1}
+select{width:100%;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:12px;margin:6px 0 12px}.gA{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+@media(max-width:760px){.g2,.g3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.hm{display:none}}
+.card{background:var(--p);border:1px solid var(--ln);border-radius:var(--r);padding:18px}
+.card h3{font-size:18px;margin-bottom:6px}.card p{margin:0 0 10px;color:#c6ccd9}
+.lab{font-size:13px;color:var(--mu)}
+.big{font-size:clamp(32px,7vw,46px);font-weight:800;line-height:1.1}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.btn{background:var(--or);color:#1a1100;border:0;border-radius:10px;padding:11px 16px;font-weight:700;text-decoration:none;display:inline-block}
+.btn.g{background:none;border:1px solid var(--ln);color:var(--mu)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{font-weight:600;color:var(--mu);font-size:13px;text-align:right;padding:8px 10px;border-bottom:1px solid var(--ln)}
+td{padding:11px 10px;border-bottom:1px solid var(--ln);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+.coin{display:flex;align-items:center;gap:10px;font-weight:600}
+.coin i{width:28px;height:28px;border-radius:50%;background:var(--p2);display:grid;place-items:center;font:600 10px 'IBM Plex Mono',monospace;font-style:normal;color:var(--or)}
+.coin small{color:var(--mu);font-weight:400}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.pill{background:var(--p);border:1px solid var(--ln);border-radius:99px;padding:7px 14px;font-weight:600;font-size:14px;color:var(--mu)}
+.pill[aria-pressed=true]{background:var(--or);border-color:var(--or);color:#1a1100}
+.art h2{margin-top:0;font-size:28px}.art p{max-width:66ch}.art li{margin:6px 0;max-width:66ch}
+.note{border-left:3px solid var(--or);background:var(--p2);padding:12px 14px;border-radius:0 10px 10px 0;margin:14px 0;max-width:66ch}
+.bar{height:8px;background:var(--p2);border-radius:9px;overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;background:var(--or)}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:12px 14px;margin:8px 0}
+.opt.r{border-color:var(--up);background:rgba(61,220,151,.1)}.opt.w{border-color:var(--dn);background:rgba(255,107,107,.1)}
+.lsn{width:100%;text-align:left;background:var(--p);border:1px solid var(--ln);border-radius:var(--r);padding:16px 18px}
+.lsn:hover{border-color:var(--or)}.lsn.d{border-color:var(--up)}
+.lsn h3{font-size:18px}
+input[type=text],input[type=search],input[type=number]{width:100%;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:12px;margin:6px 0 12px}
+.msg{background:var(--bg);border:1px dashed var(--ln);border-radius:10px;padding:14px;margin:12px 0}
+dt{font-weight:800;color:var(--or);margin-top:14px}dd{margin:2px 0 0;max-width:70ch}
+footer{border-top:1px solid var(--ln);color:var(--mu);font-size:13px;padding:22px 0 40px;margin-top:40px}
+.tl{list-style:none;margin:18px 0 0;padding:0 0 0 22px;border-left:2px solid var(--ln);max-width:66ch}
+.tl li{position:relative;margin:0 0 20px}.tl li::before{content:'';position:absolute;left:-30px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--up);border:3px solid var(--p)}
+.tl li.h::before{background:var(--or)}.tl li.c::before{background:var(--dn)}
+.tl .y{font:500 13px 'IBM Plex Mono',monospace;color:var(--or)}.tl b{display:block;font-size:17px}.tl span{color:#c6ccd9}
+.key{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mu);margin:8px 0}.key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--p2);border:1px solid var(--or);border-radius:12px;padding:12px 16px;display:none;z-index:60;max-width:92vw;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.ig{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--ln);border-radius:99px;padding:6px 12px;font-weight:600;font-size:13px}
+.ig svg{width:16px;height:16px}.ig:hover{border-color:var(--or)}
+.modal{position:fixed;inset:0;background:rgba(5,7,11,.72);display:none;place-items:center;z-index:80;padding:18px}.modal.open{display:grid}
+.mbox{position:relative;background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:28px 24px 22px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.mbox p{color:#c6ccd9;margin:10px 0 18px}.mbox .btn{display:block;width:100%;margin-bottom:8px;text-align:center}
+.mx{position:absolute;top:8px;right:10px;background:none;border:0;font-size:26px;color:var(--mu);line-height:1;padding:4px 8px}
+.igi{width:56px;height:56px;border-radius:16px;margin:0 auto 14px;display:grid;place-items:center;color:#fff;background:linear-gradient(45deg,#f9a03f,#e1306c 55%,#833ab4)}.igi svg{width:30px;height:30px}
+[hidden]{display:none!important}
+svg.ch{width:100%;height:auto;display:block}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="w">
+ <div class="top">
+  <a class="brand" href="#/"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#f7931a"/><path d="M9 9h8a4 4 0 010 7H9zm0 7h9a4 4 0 010 8H9z" fill="#0e1117"/></svg>Blockwise</a>
+  <div style="display:flex;align-items:center;gap:12px"><div class="tick mono" id="tick">BTC ...</div>
+   <button class="ig" id="igBtn" aria-label="Follow the creator on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span class="hm">Follow</span></button></div>
+ </div>
+ <nav id="nav">
+  <a href="#/" data-p="dash">Markets</a><a href="#/bitcoin" data-p="bitcoin">Bitcoin guide</a><a href="#/altcoins" data-p="alts">Other coins</a><a href="#/learn" data-p="learn">Courses</a><a href="#/simulator" data-p="sim">Simulator</a><a href="#/alerts" data-p="alerts">Alerts</a><a href="#/tools" data-p="tools">Tools</a><a href="#/safety" data-p="safety">Safety</a><a href="#/glossary" data-p="gloss">Glossary</a>
+ </nav>
+</div></header>
+
+<main class="w">
+<!-- MARKETS -->
+<section id="p-dash">
+ <h1>Bitcoin and crypto markets</h1>
+ <p class="sub">Live prices, the next halving, and the plain-English explanations behind the numbers.</p>
+ <div class="grid g2" style="margin-top:20px">
+  <div class="card">
+   <div class="lab">Bitcoin (BTC), USD</div>
+   <div class="big mono" id="btcP">Loading...</div>
+   <div id="btcC" class="mono" style="margin-bottom:8px"></div>
+   <div class="rg" id="rg"><button class="pill" data-d="1" aria-pressed="false">1D</button><button class="pill" data-d="7" aria-pressed="true">7D</button><button class="pill" data-d="30" aria-pressed="false">30D</button><button class="pill" data-d="365" aria-pressed="false">1Y</button></div>
+   <div class="cw"><div id="chart" style="min-height:170px"></div><div class="tip mono" id="tip"></div></div>
+  </div>
+  <div class="card">
+   <div class="lab">Next Bitcoin halving</div>
+   <div class="big mono" id="hvDays">...</div>
+   <div class="lab" id="hvSub">days (estimate)</div>
+   <div class="bar"><i id="hvBar" style="width:0"></i></div>
+   <p class="lab" id="hvTxt"></p>
+   <a class="btn g" href="#/bitcoin" onclick="pick(3)">How halving works</a>
+  </div>
+ </div>
+ <div class="grid g4" style="margin-top:14px">
+  <div class="card stat"><div class="lab">Market mood</div><div class="v mono" id="sF">-</div><div class="lab" id="sFl">Fear and greed</div></div>
+  <div class="card stat"><div class="lab">Block height</div><div class="v mono" id="sH">-</div><div class="lab">latest block</div></div>
+  <div class="card stat"><div class="lab">Block reward</div><div class="v mono" id="sR">-</div><div class="lab">per block</div></div>
+  <div class="card stat"><div class="lab">Bitcoin mined</div><div class="v mono" id="sM">-</div><div class="lab">of 21M cap</div></div>
+ </div>
+ <h2>Your watchlist</h2>
+ <div class="grid gA" id="wlBox"></div>
+ <h2>Top coins</h2>
+ <div class="card" style="padding:4px 8px;overflow-x:auto">
+  <table><thead><tr><th>Coin</th><th>Price</th><th>24h</th><th class="hm">7d</th><th class="hm">Market cap</th></tr></thead><tbody id="mkt"><tr><td colspan="5" class="lab">Loading prices...</td></tr></tbody></table>
+ </div>
+ <p class="lab" id="stamp"></p>
+ <h2>Start here</h2>
+ <div class="grid g3">
+  <div class="card"><h3>New to Bitcoin?</h3><p>What it is, how it works and who Satoshi is.</p><a class="btn" href="#/bitcoin">Read the guide</a></div>
+  <div class="card"><h3>Learn step by step</h3><p>Six short courses with quizzes and XP.</p><a class="btn" href="#/learn">Start a course</a></div>
+  <div class="card"><h3>Stay safe</h3><p>Spot common scams before they cost you.</p><a class="btn" href="#/safety">Try scam spotter</a></div>
+ </div>
+</section>
+
+<!-- BITCOIN GUIDE -->
+<section id="p-bitcoin" hidden>
+ <h1>The Bitcoin guide</h1>
+ <p class="sub">Ten short chapters, from the basics and a full history timeline to the details people usually get wrong.</p>
+ <div class="pills" id="pills"></div>
+ <article class="card art" id="art"></article>
+</section>
+
+<!-- OTHER COINS -->
+<section id="p-alts" hidden>
+ <h1>Other coins, explained</h1>
+ <p class="sub">Bitcoin is not the only coin. Here is what the biggest ones are for. Prices are live when available.</p>
+ <div class="grid gA" id="altGrid" style="margin-top:20px"></div>
+</section>
+
+<!-- COURSES -->
+<section id="p-learn" hidden>
+ <div id="lsnList">
+  <h1>Courses</h1>
+  <p class="sub">Each course is 3 short cards and a 2-question quiz. Earn XP and keep a streak.</p>
+  <div class="row"><span class="card mono" id="xp" style="padding:8px 14px">0 XP</span><span class="card mono" id="stk" style="padding:8px 14px">Streak 0</span></div>
+  <div class="grid gA" id="lsns" style="margin-top:16px"></div>
+ </div>
+ <div id="lsnView" hidden></div>
+</section>
+
+<!-- ALERTS -->
+<section id="p-alerts" hidden>
+ <h1>Price alerts</h1>
+ <p class="sub">Get notified when a coin crosses your target price. Alerts are checked every minute while Blockwise is open in a browser tab, and are saved on this device.</p>
+ <div class="grid g2" style="margin-top:20px">
+  <div class="card">
+   <h3>New alert</h3>
+   <label class="lab" for="aCoin">Coin</label><select id="aCoin"></select>
+   <div class="rg"><button class="pill" id="aUp" aria-pressed="true">Goes above</button><button class="pill" id="aDn" aria-pressed="false">Drops below</button></div>
+   <label class="lab" for="aPx">Target price (USD)</label><input type="number" id="aPx" min="0" step="any" placeholder="100000">
+   <p class="lab" id="aNow" style="min-height:24px"></p>
+   <button class="btn" id="aAdd">Add alert</button> <span id="aMsg" class="lab"></span>
+  </div>
+  <div class="card">
+   <h3>Browser notifications</h3>
+   <p>Turn on notifications to get a pop-up when an alert triggers, even if you are on another tab. The Blockwise tab still needs to stay open, and some phones pause background tabs.</p>
+   <button class="btn g" id="aNotif">Enable notifications</button><p class="lab" id="aNote"></p>
+  </div>
+ </div>
+ <h2>Your alerts</h2>
+ <div class="card" style="overflow-x:auto" id="aList"></div>
+</section>
+
+<!-- SIMULATOR -->
+<section id="p-sim" hidden>
+ <h1>Paper trading simulator</h1>
+ <p class="sub">Practice with $10,000 of fake money at live prices. No risk and no sign-up. Each trade has a 0.1% fee, like a real exchange. Your portfolio is saved on this device.</p>
+ <div class="grid g4" id="simSum" style="margin-top:20px"></div>
+ <div class="grid g2" style="margin-top:14px">
+  <div class="card">
+   <h3>Place a trade</h3>
+   <div class="rg"><button class="pill" id="sBuy" aria-pressed="true">Buy</button><button class="pill" id="sSell" aria-pressed="false">Sell</button></div>
+   <label class="lab" for="sCoin">Coin</label><select id="sCoin"></select>
+   <label class="lab" for="sAmt">Amount in USD</label><input type="number" id="sAmt" min="0" step="any" placeholder="1000">
+   <div class="rg" id="sPct"><button class="pill" data-p="25">25%</button><button class="pill" data-p="50">50%</button><button class="pill" data-p="100">Max</button></div>
+   <p class="lab" id="sEst" style="min-height:24px"></p>
+   <button class="btn" id="sGo">Buy</button> <span id="sMsg" class="lab"></span>
+  </div>
+  <div class="card" style="overflow-x:auto"><h3>Your holdings</h3><div id="simHold"></div></div>
+ </div>
+ <h2>Trade history</h2>
+ <div class="card" style="overflow-x:auto" id="simLog"></div>
+ <div class="row"><button class="btn g" id="sReset">Reset to $10,000</button></div>
+</section>
+
+<!-- TOOLS -->
+<section id="p-tools" hidden>
+ <h1>Tools</h1>
+ <p class="sub">Small calculators that make Bitcoin concepts concrete.</p>
+ <div class="grid g2" style="margin-top:20px">
+  <div class="card">
+   <h3>BTC, sats and USD converter</h3>
+   <p class="lab">1 BTC = 100,000,000 satoshis (sats). Uses the live price.</p>
+   <label class="lab" for="cB">BTC</label><input type="number" id="cB" step="any" min="0" placeholder="0.001">
+   <label class="lab" for="cS">Satoshis</label><input type="number" id="cS" step="1" min="0" placeholder="100000">
+   <label class="lab" for="cU">USD</label><input type="number" id="cU" step="any" min="0" placeholder="100">
+  </div>
+  <div class="card">
+   <h3>Supply left to mine</h3>
+   <div class="big mono" id="sup">...</div>
+   <p class="lab">of 21,000,000 BTC already created (estimate from block height)</p>
+   <div class="bar"><i id="supBar" style="width:0"></i></div>
+  </div>
+ </div>
+ <h2>Halving schedule</h2>
+ <div class="card" style="padding:4px 8px;overflow-x:auto" id="hvTable"></div>
+</section>
+
+<!-- SAFETY -->
+<section id="p-safety" hidden>
+ <h1>Stay safe</h1>
+ <p class="sub">Most crypto losses come from scams and mistakes, not from the technology.</p>
+ <h2>Scam spotter</h2>
+ <div id="scamBox"></div>
+ <h2>Safety checklist</h2>
+ <div class="card"><ul style="margin:0;padding-left:20px">
+  <li>Never share your seed phrase or private key with anyone, ever.</li>
+  <li>Use an authenticator app for 2FA, not SMS.</li>
+  <li>Bookmark official sites; do not click links in DMs or ads.</li>
+  <li>Send a small test transaction before a large one.</li>
+  <li>If the return sounds guaranteed, it is a scam.</li>
+  <li>Only invest money you can afford to lose.</li></ul></div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="p-gloss" hidden>
+ <h1>Glossary</h1>
+ <input type="search" id="q" placeholder="Search a term, like halving or sat" aria-label="Search glossary" style="margin-top:16px">
+ <dl id="terms"></dl>
+</section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal" id="igModal" role="dialog" aria-modal="true" aria-labelledby="igT">
+ <div class="mbox">
+  <button class="mx" id="igX" aria-label="Close">&times;</button>
+  <div class="igi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div>
+  <h3 id="igT" style="font-size:22px">Follow the creator and curator</h3>
+  <p>I built Blockwise to make Bitcoin and crypto simple, free and safe to learn for everyone: live prices, honest explanations and no sign-ups. I curate everything you see here. Follow along for updates and new features.</p>
+  <a class="btn" id="igFollow" href="https://www.instagram.com/vanshbansal_08/" target="_blank" rel="noopener noreferrer">Follow @vanshbansal_08</a>
+  <button class="btn g" id="igLater">Maybe later</button>
+ </div>
+</div>
+<footer><div class="w"><p><a href="https://www.instagram.com/vanshbansal_08/" target="_blank" rel="noopener noreferrer" style="color:var(--or)">Follow the creator on Instagram: @vanshbansal_08</a></p>Blockwise is for education only and is not financial advice. Crypto is volatile and you can lose everything you invest. Prices from CoinGecko, block height from mempool.space.</div></footer>
+
+<script>
+const $=s=>document.querySelector(s),fmt=(n,d=2)=>n==null?"-":n.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const usd=n=>n==null?"-":"$"+(n>=1?fmt(n):fmt(n,4));
+const pct=n=>n==null?"-":`<span class="${n>=0?'up':'dn'}">${n>=0?"+":""}${n.toFixed(2)}%</span>`;
+
+/* ---------- Bitcoin guide ---------- */
+const HALV=[[0,50,"Jan 2009"],[210000,25,"Nov 2012"],[420000,12.5,"Jul 2016"],[630000,6.25,"May 2020"],[840000,3.125,"Apr 2024"],[1050000,1.5625,"~2028"],[1260000,0.78125,"~2032"],[1470000,0.390625,"~2036"]];
+function HT(){return `<table><thead><tr><th>Era</th><th>Starts at block</th><th>Reward (BTC)</th><th>Date</th><th>Total supply after</th></tr></thead><tbody>`+HALV.map((h,i)=>`<tr><td>${i}</td><td class="mono">${fmt(h[0],0)}</td><td class="mono">${h[1]}</td><td>${h[2]}</td><td class="mono">${fmt(21e6*(1-Math.pow(.5,i+1)),0)}</td></tr>`).join("")+`</tbody></table>`}
+const ART=[
+["What is Bitcoin?",()=>`<p>Bitcoin is digital money that works without a bank or company in the middle. It runs on a public network of computers that all keep the same record of who owns what. That record is called the blockchain.</p>
+<p>Three ideas make it special: <b>no central owner</b> (nobody can switch it off), <b>fixed supply</b> (only 21 million will ever exist), and <b>open rules</b> (anyone can run software that checks them).</p>
+<div class="note">Bitcoin (capital B) is the network and the idea. bitcoin or BTC (lowercase) is the unit of money.</div>`],
+["Who is Satoshi Nakamoto?",()=>`<p>Satoshi Nakamoto is the pseudonym of the person or group who created Bitcoin. They published the Bitcoin whitepaper on 31 October 2008 and mined the first block, the genesis block, on 3 January 2009.</p>
+<p>Satoshi worked with early developers online until 2011, then stopped communicating. Their real identity has never been proven, despite many theories.</p>
+<ul><li>Early coins believed to belong to Satoshi are widely estimated at around 1 million BTC and have never moved.</li>
+<li>The smallest unit of Bitcoin, one hundred-millionth of a coin, is named a <b>satoshi</b> (sat) in their honor.</li></ul>
+<div class="note">Be careful: anyone claiming to be Satoshi has so far failed to prove it with the one thing that would settle it, signing a message with the early keys.</div>`],
+["How Bitcoin works",()=>`<p>Here is the life of a Bitcoin payment:</p>
+<ol><li><b>You send</b> a transaction signed with your private key. The signature proves you own the coins without revealing the key.</li>
+<li><b>Nodes check it.</b> Thousands of computers verify the signature and that the coins were not already spent.</li>
+<li><b>Miners bundle it</b> into a block. About every 10 minutes, a miner wins the race to add the next block.</li>
+<li><b>Proof of work.</b> Miners repeatedly guess numbers until a hash meets a difficulty target. It is costly to produce but instant to verify.</li>
+<li><b>Confirmations.</b> Each new block on top makes reversing your payment harder. 6 confirmations is a common standard for large payments.</li></ol>
+<p>Difficulty adjusts every 2,016 blocks (about two weeks) so blocks keep arriving roughly every 10 minutes no matter how many miners join.</p>`],
+["Halving explained",()=>`<p>Every 210,000 blocks (roughly four years), the reward miners get for a new block is cut in half. This is the halving. It started at 50 BTC per block in 2009 and is 3.125 BTC after April 2024.</p>
+<p>Why it exists: it controls how fast new bitcoin enters circulation and is what makes the total supply approach 21 million. The final bitcoin is expected around the year 2140, after which miners earn only transaction fees.</p>
+${HT()}
+<div class="note">Past halvings were followed by large price moves, but that is not a guarantee. Many factors move price, so treat any halving prediction as speculation.</div>`],
+["Supply and satoshis",()=>`<p>There will never be more than 21 million BTC. Each BTC splits into 100,000,000 sats, so you can own a tiny fraction, for example 50,000 sats.</p>
+<ul><li>1 BTC = 100,000,000 sats</li><li>1 sat = 0.00000001 BTC</li><li>Cap of 21M BTC = 2.1 quadrillion sats</li></ul>
+<p>Some coins are lost forever (lost keys, forgotten wallets), so the real circulating supply is lower than what has been mined. Try the converter under <a href="#/tools" style="color:var(--or)">Tools</a>.</p>`],
+["Wallets, keys and custody",()=>`<p>A Bitcoin wallet does not store coins; it stores the keys that control them. Your <b>public address</b> receives payments. Your <b>private key</b> spends them. Your <b>seed phrase</b> (12 or 24 words) can restore everything.</p>
+<ul><li><b>Exchange wallet:</b> easiest, but the company holds your keys.</li><li><b>Software wallet:</b> keys live on your phone or computer.</li><li><b>Hardware wallet:</b> keys stay on a small offline device. Best for larger amounts.</li></ul>
+<div class="note">Not your keys, not your coins: if a company holds your keys, you depend on that company.</div>`],
+["Lightning Network",()=>`<p>Bitcoin base layer processes a limited number of transactions, and confirmations take minutes. The Lightning Network is a second layer for fast, low-fee payments.</p>
+<p>Two people open a payment channel by locking coins on-chain, then send each other payments instantly off-chain. Only the opening and closing are recorded on the blockchain. It is popular for small payments and tipping.</p>`],
+["Bitcoin vs gold vs dollars",()=>`<p>People often compare Bitcoin to gold because both are scarce. Here is a fair comparison:</p>
+<ul><li><b>Supply:</b> Bitcoin is capped at 21M; dollars can be created by central banks; gold supply grows slowly through mining.</li>
+<li><b>Portability:</b> Bitcoin moves across the world in minutes; gold is heavy.</li>
+<li><b>Track record:</b> gold has thousands of years of history; Bitcoin has under 20 years and is far more volatile.</li>
+<li><b>Risk:</b> Bitcoin price can swing 10% or more in a day.</li></ul>`],
+["History timeline",()=>{const T=[
+["Aug 2008","bitcoin.org registered","The domain name for the project is registered a couple of months before the whitepaper appears.","m"],
+["31 Oct 2008","The whitepaper","Satoshi Nakamoto publishes the Bitcoin whitepaper to a cryptography mailing list, describing a peer-to-peer electronic cash system.","m"],
+["3 Jan 2009","Genesis block","The first block is mined and the network goes live.","m"],
+["12 Jan 2009","First transaction","Satoshi sends 10 BTC to developer Hal Finney, the first person-to-person Bitcoin payment.","m"],
+["22 May 2010","Bitcoin Pizza Day","Programmer Laszlo Hanyecz pays 10,000 BTC for two pizzas, the first widely known real-world purchase.","m"],
+["Feb 2011","Parity with the dollar","One bitcoin trades at roughly one US dollar for the first time.","m"],
+["Apr 2011","Satoshi steps away","Satoshi's last known messages are sent and they hand the project over to other developers.","m"],
+["28 Nov 2012","First halving","The block reward drops from 50 to 25 BTC.","h"],
+["Nov 2013","Above $1,000","Bitcoin's price passes $1,000 for the first time.","m"],
+["Feb 2014","Mt. Gox collapses","The largest exchange of its day halts withdrawals after losing around 850,000 BTC. A hard lesson in custody risk.","c"],
+["9 Jul 2016","Second halving","The block reward drops from 25 to 12.5 BTC.","h"],
+["Dec 2017","Near $20,000","Bitcoin reaches almost $20,000, then falls roughly 80% over the following year.","c"],
+["11 May 2020","Third halving","The block reward drops from 12.5 to 6.25 BTC.","h"],
+["Feb 2021","Companies buy in","Tesla announces a $1.5 billion Bitcoin purchase, following earlier moves by other public companies.","m"],
+["7 Sep 2021","El Salvador adopts Bitcoin","It becomes the first country to make Bitcoin legal tender.","m"],
+["Nov 2021","Around $69,000","Bitcoin hits a then all-time high near $69,000.","m"],
+["Nov 2022","FTX collapses","One of the biggest exchanges goes bankrupt, shaking confidence across crypto.","c"],
+["Jan 2024","Spot Bitcoin ETFs approved","The US SEC approves the first spot Bitcoin ETFs, making it easier for ordinary investors to get exposure.","m"],
+["20 Apr 2024","Fourth halving","The block reward drops from 6.25 to 3.125 BTC.","h"],
+["Dec 2024","Passes $100,000","Bitcoin crosses $100,000 for the first time.","m"],
+["~2028","Next halving","The reward is expected to fall to 1.5625 BTC. See the Markets tab for the live countdown.","h"]];
+return `<p>The main milestones in Bitcoin's history, from the whitepaper to today. The timeline covers events through 2024.</p>
+<div class="key"><span><i style="background:var(--up)"></i>Milestone</span><span><i style="background:var(--or)"></i>Halving</span><span><i style="background:var(--dn)"></i>Crash or collapse</span></div>
+<ol class="tl">${T.map(x=>`<li class="${x[3]}"><div class="y">${x[0]}</div><b>${x[1]}</b><span>${x[2]}</span></li>`).join("")}</ol>`}],
+["Common myths",()=>`<ul><li><b>"Bitcoin is anonymous."</b> It is pseudonymous. Every transaction is public and can often be traced to a person.</li>
+<li><b>"It is only for criminals."</b> Studies and regulators generally find illicit use is a small share of activity, and cash is still far more used for crime.</li>
+<li><b>"Bitcoin was hacked."</b> The protocol itself has not been broken; exchanges and individuals have been hacked.</li>
+<li><b>"It is a guaranteed investment."</b> Nothing is guaranteed. Price has fallen 70% or more several times.</li>
+<li><b>"Mining uses too much energy."</b> It does use a lot; supporters point to renewable and stranded energy, critics point to the footprint. It is a real debate.</li></ul>`]
+];
+let ai=0;
+function pick(i){ai=i;drawArt()}
+function drawArt(){
+ $("#pills").innerHTML=ART.map((a,i)=>`<button class="pill" data-a="${i}" aria-pressed="${i===ai}">${a[0]}</button>`).join("");
+ $("#art").innerHTML=`<h2>${ART[ai][0]}</h2>${ART[ai][1]()}<div class="row">${ai>0?`<button class="btn g" data-a="${ai-1}">Previous</button>`:""}${ai<ART.length-1?`<button class="btn" data-a="${ai+1}">Next: ${ART[ai+1][0]}</button>`:`<a class="btn" href="#/learn">Test yourself in Courses</a>`}</div>`;
+}
+$("#p-bitcoin").addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(b){pick(+b.dataset.a);scrollTo(0,0)}});
+
+/* ---------- Other coins ---------- */
+const ALTS=[["ethereum","Ethereum","ETH","A programmable blockchain. Developers build apps, tokens and DeFi on it, and fees are paid in ETH."],["tether","Tether","USDT","The largest stablecoin, designed to stay at $1. Used for trading and moving dollars quickly."],["binancecoin","BNB","BNB","Native coin of the BNB Chain, tied to the Binance exchange ecosystem."],["solana","Solana","SOL","A fast, low-fee blockchain popular for apps, payments and trading."],["ripple","XRP","XRP","Built for fast cross-border payments between banks and payment firms."],["usd-coin","USD Coin","USDC","A dollar stablecoin issued by Circle, backed by reserves of cash and short-term US treasuries."],["cardano","Cardano","ADA","A proof-of-stake blockchain developed with an academic, research-first approach."],["dogecoin","Dogecoin","DOGE","Started as a joke in 2013 and became a popular tipping coin. Very volatile."],["litecoin","Litecoin","LTC","An early Bitcoin offshoot with faster blocks and lower fees, often called silver to Bitcoin's gold."]];
+function drawAlts(){
+ $("#altGrid").innerHTML=ALTS.map(a=>{const m=MK[a[0]];return `<div class="card"><div class="coin"><i>${a[2]}</i>${a[1]}</div><div class="mono" style="margin:10px 0 4px;font-size:20px">${m?usd(m.current_price):"-"}</div><div class="lab mono">${m?pct(m.price_change_percentage_24h)+" 24h":""}</div><p style="margin-top:10px">${a[3]}</p></div>`}).join("");
+}
+
+/* ---------- Live data ---------- */
+let MK={},BTC=null,HEIGHT=null,FNG=null,CR=7,CD={};
+async function loadAll(){
+ try{
+  const r=await fetch("/api/markets");if(!r.ok)throw 0;const d=await r.json();
+  MK={};d.coins.forEach(c=>MK[c.id]={id:c.id,name:c.name,symbol:c.symbol,current_price:c.price,price_change_percentage_24h:c.change24h,price_change_percentage_7d_in_currency:c.change7d,market_cap:c.cap,sparkline_in_7d:{price:c.spark}});
+  BTC=MK.bitcoin;HEIGHT=d.height;FNG=d.fng;CD={};
+  drawMarkets();drawAlts();drawHalving();drawStats();
+  $("#stamp").textContent="Prices update every minute. Last update "+new Date().toLocaleTimeString();
+ }catch(e){await loadMarkets();await loadHeight();drawStats()}
+}
+function drawStats(){
+ const h=height();$("#sH").textContent=fmt(h,0);$("#sR").textContent=(h>=1050000?1.5625:3.125)+" BTC";
+ $("#sM").textContent=((19687500+(h-840000)*3.125)/21e6*100).toFixed(2)+"%";
+ if(FNG){$("#sF").textContent=FNG.value+"/100";$("#sFl").textContent=FNG.label}
+}
+async function loadChart(d){
+ let pts=null;
+ try{if(!CD[d]){const r=await fetch("/api/chart?days="+d);if(!r.ok)throw 0;CD[d]=(await r.json()).prices}pts=CD[d]}catch(e){
+  if(BTC&&BTC.sparkline_in_7d&&BTC.sparkline_in_7d.price.length){const a=BTC.sparkline_in_7d.price;pts=a.map((v,i)=>[Date.now()-(a.length-1-i)*36e5,v]);d=7}}
+ if(pts)drawChart(pts,d);
+}
+function drawChart(p,d){
+ const w=600,h=200,a=p.map(x=>x[1]),mn=Math.min(...a),mx=Math.max(...a),sx=w/(a.length-1),y=v=>h-10-(v-mn)/(mx-mn||1)*(h-20),c=a[a.length-1]>=a[0]?"#3ddc97":"#ff6b6b";
+ const path=a.map((v,i)=>(i?"L":"M")+(i*sx).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+ $("#chart").innerHTML=`<svg class="ch" viewBox="0 0 ${w} ${h}" id="csvg" role="img" aria-label="Bitcoin price chart" style="touch-action:pan-y"><path d="${path} L${w} ${h} L0 ${h}Z" fill="${c}" opacity=".12"/><path d="${path}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/><line id="cl" y1="0" y2="${h}" stroke="#8f9bb0" stroke-dasharray="3" style="display:none"/><circle id="cd" r="5" fill="${c}" style="display:none"/></svg>`;
+ const svg=$("#csvg"),tip=$("#tip"),cl=$("#cl"),cd=$("#cd");
+ svg.onpointermove=e=>{
+  const r=svg.getBoundingClientRect(),i=Math.max(0,Math.min(a.length-1,Math.round((e.clientX-r.left)/r.width*(a.length-1)))),x=i*sx;
+  cl.setAttribute("x1",x);cl.setAttribute("x2",x);cl.style.display=cd.style.display="";cd.setAttribute("cx",x);cd.setAttribute("cy",y(a[i]));
+  const dt=new Date(p[i][0]).toLocaleString("en-US",d<=7?{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}:{month:"short",day:"numeric",year:"numeric"});
+  tip.textContent=usd(a[i])+"  "+dt;tip.style.display="block";
+  tip.style.left=Math.max(0,Math.min(r.width-tip.offsetWidth,x/w*r.width-tip.offsetWidth/2))+"px";
+ };
+ svg.onpointerleave=()=>{cl.style.display=cd.style.display="none";tip.style.display="none"};
+}
+$("#rg").onclick=e=>{const b=e.target.closest("[data-d]");if(!b)return;CR=+b.dataset.d;[...$("#rg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));loadChart(CR)};
+const ids="bitcoin,ethereum,tether,binancecoin,solana,ripple,usd-coin,cardano,dogecoin,litecoin";
+async function loadMarkets(){
+ try{
+  const r=await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&sparkline=true&price_change_percentage=24h,7d`);
+  if(!r.ok)throw 0;const d=await r.json();MK={};d.forEach(c=>MK[c.id]=c);
+  BTC=MK.bitcoin;drawMarkets();drawAlts();
+  $("#stamp").textContent="Prices update every minute. Last update "+new Date().toLocaleTimeString();
+ }catch(e){$("#mkt").innerHTML='<tr><td colspan="5" class="lab">'+(location.protocol==="file:"?"Live prices need the site to be hosted (for example on Vercel). They cannot load when index.html is opened straight from a file or a preview.":"Could not load live prices right now. Retrying shortly.")+'</td></tr>';$("#btcP").textContent="Unavailable"}
+}
+function spark(a,w=600,h=170){
+ const mn=Math.min(...a),mx=Math.max(...a),sx=w/(a.length-1),y=v=>h-8-(v-mn)/(mx-mn||1)*(h-16);
+ const p=a.map((v,i)=>(i?"L":"M")+(i*sx).toFixed(1)+" "+y(v).toFixed(1)).join(" "),up=a[a.length-1]>=a[0],c=up?"#3ddc97":"#ff6b6b";
+ return `<svg class="ch" viewBox="0 0 ${w} ${h}" role="img" aria-label="7 day price chart"><path d="${p} L${w} ${h} L0 ${h}Z" fill="${c}" opacity=".12"/><path d="${p}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/></svg>`;
+}
+function drawMarkets(){
+ if(!BTC)return;
+ $("#btcP").textContent=usd(BTC.current_price);
+ $("#btcC").innerHTML=pct(BTC.price_change_percentage_24h)+' <span class="lab">24h</span>';
+ loadChart(CR);drawWL();drawSim();checkAlerts();
+ $("#tick").innerHTML=`BTC <b>${usd(BTC.current_price)}</b> ${pct(BTC.price_change_percentage_24h)}`;
+ $("#mkt").innerHTML=Object.values(MK).sort((a,b)=>b.market_cap-a.market_cap).map(c=>`<tr><td><div class="coin"><button class="star" data-w="${c.id}" aria-label="${WL.includes(c.id)?'Remove':'Add'} ${c.name} ${WL.includes(c.id)?'from':'to'} watchlist">${WL.includes(c.id)?"★":"☆"}</button><i>${c.symbol.toUpperCase().slice(0,4)}</i><span>${c.name}</span></div></td><td class="mono">${usd(c.current_price)}</td><td class="mono">${pct(c.price_change_percentage_24h)}</td><td class="mono hm">${pct(c.price_change_percentage_7d_in_currency)}</td><td class="mono hm">$${fmt(c.market_cap/1e9,1)}B</td></tr>`).join("");
+ convInit();
+}
+async function loadHeight(){
+ try{const r=await fetch("https://mempool.space/api/blocks/tip/height");if(!r.ok)throw 0;HEIGHT=+(await r.text())}catch(e){HEIGHT=null}
+ drawHalving();
+}
+function height(){return HEIGHT||Math.floor(840000+(Date.now()-Date.UTC(2024,3,20))/600000)}
+function drawHalving(){
+ const h=height(),next=1050000,left=next-h,days=left/144,date=new Date(Date.now()+days*864e5);
+ $("#hvDays").textContent=fmt(days,0);
+ $("#hvBar").style.width=((h-840000)/210000*100).toFixed(1)+"%";
+ $("#hvTxt").textContent=`${fmt(left,0)} blocks left. Block ${fmt(h,0)}${HEIGHT?"":" (estimated)"}. Expected around ${date.toLocaleDateString("en-US",{month:"long",year:"numeric"})}. Reward then drops from 3.125 to 1.5625 BTC.`;
+ const mined=21e6*(1-Math.pow(.5,4))+(h-840000)*3.125-0; /* start of era4 supply = 19,687,500 */
+ const sup=19687500+(h-840000)*3.125;
+ $("#sup").textContent=fmt(sup,0)+" BTC";$("#supBar").style.width=(sup/21e6*100).toFixed(1)+"%";
+}
+$("#hvTable").innerHTML=HT();
+
+/* ---------- Converter ---------- */
+function convInit(){
+ const B=$("#cB"),S=$("#cS"),U=$("#cU");if(!BTC||B.dataset.i)return;B.dataset.i=1;const P=()=>BTC.current_price;
+ B.oninput=()=>{const v=+B.value;S.value=Math.round(v*1e8)||"";U.value=v?(v*P()).toFixed(2):""};
+ S.oninput=()=>{const v=+S.value/1e8;B.value=v||"";U.value=v?(v*P()).toFixed(2):""};
+ U.oninput=()=>{const v=+U.value/P();B.value=v?v.toFixed(8):"";S.value=v?Math.round(v*1e8):""};
+}
+
+/* ---------- Courses ---------- */
+const LS=[
+{t:"Bitcoin basics",s:"What it is and why it exists",c:[["A shared ledger","Bitcoin is a public record of who owns what, copied across thousands of computers. No company or government runs it."],["Created in 2009","A person or group called Satoshi Nakamoto released it after the 2008 financial crisis, to let people send value without banks."],["Fixed supply","Only 21 million bitcoin will ever exist. That scarcity is a core part of its design."]],q:[["How many bitcoin will ever exist?",["21 million","100 million","Unlimited"],0,"The cap is enforced by every node running the rules."],["Who controls the Bitcoin network?",["The US government","Satoshi Nakamoto","No single party"],2,"Thousands of independent computers run the same rules."]]},
+{t:"Mining and halving",s:"How new bitcoin is made",c:[["Miners secure the network","Miners compete to add a block roughly every 10 minutes, using computing power. The winner earns new bitcoin plus fees."],["The halving","Every 210,000 blocks (about 4 years) the block reward is cut in half. It is 3.125 BTC since April 2024."],["Why it matters","Halving slows new supply and leads toward the 21 million cap around 2140. It does not guarantee a price rise."]],q:[["How often does a halving happen?",["Every year","Every 210,000 blocks","Every 21 days"],1,"About every four years."],["What is the block reward after April 2024?",["6.25 BTC","3.125 BTC","50 BTC"],1,"It was 50 BTC at the start and has halved four times."]]},
+{t:"Satoshis and Satoshi",s:"Units and the creator",c:[["What is a sat?","A satoshi is the smallest unit: 1 BTC equals 100,000,000 sats. You can buy a few thousand sats instead of a whole coin."],["Who is Satoshi?","The unknown creator of Bitcoin. They disappeared from public view in 2011, and their identity is still unproven."],["Why it is decentralized","Without a known leader, no one person can change Bitcoin's rules on their own. That was the intent."]],q:[["How many sats in 1 BTC?",["1 million","100 million","21 million"],1,"1 sat = 0.00000001 BTC."],["Do we know who Satoshi is?",["Yes, it is proven","No, it is unknown","Yes, it is an exchange"],1,"Many have claimed it; none have proven it."]]},
+{t:"Wallets and keys",s:"How you hold crypto",c:[["Keys, not coins","A wallet stores the keys that prove coins are yours. The coins live on the blockchain."],["Public vs private","Share your public address to get paid. Never share your private key or seed phrase."],["Custody","On an exchange they hold the keys. In your own wallet, you hold them and you are responsible for backups."]],q:[["Who should see your seed phrase?",["Support staff","Nobody","Your exchange"],1,"Anyone with it can take everything. Real support never asks."],["Where to store a seed phrase?",["Cloud note","Screenshot","Paper, offline"],2,"Online storage can be hacked."]]},
+{t:"Buying safely",s:"Your first purchase",c:[["Pick a reputable exchange","Use well-known, regulated platforms. Check fees, because 'free' trades often hide wider spreads."],["Secure the account","Use a unique password and authenticator-app 2FA. Avoid SMS-only security."],["Start small","Only use money you can afford to lose, and consider buying in small regular amounts rather than all at once."]],q:[["Best 2FA option?",["SMS","Authenticator app","None"],1,"SIM swaps can hijack text messages."],["How much should you start with?",["Everything you have","A small amount you can lose","A loan"],1,"Prices are volatile, so risk only what you can afford."]]},
+{t:"Scams and safety",s:"Protect your money",c:[["Free crypto is a trap","Giveaways and 'send 1, get 2' offers are scams. Nobody gives away coins."],["Fake support","Support will not DM you first or ask for your seed phrase."],["Too good to be true","Guaranteed high returns are almost always Ponzi schemes. Slow down when someone creates urgency."]],q:[["A DM says 'verify your wallet, send the 12 words'. You...",["Send them","Block and ignore","Send only half"],1,"That is a theft attempt."],["Promised returns of 5% a day are...",["Great","A red flag","Normal"],1,"No legitimate investment guarantees that."]]}
+];
+let S={xp:0,done:[],last:"",streak:0},cur=0,step=0,qi=0,ok=0;
+try{S=Object.assign(S,JSON.parse(localStorage.getItem("bw")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("bw",JSON.stringify(S))}catch(e){}};
+function drawLs(){
+ $("#xp").textContent=S.xp+" XP";$("#stk").textContent="Streak "+S.streak;
+ $("#lsns").innerHTML=LS.map((l,i)=>`<button class="lsn ${S.done.includes(i)?'d':''}" data-l="${i}"><h3>${l.t}</h3><span class="lab">${S.done.includes(i)?"Completed":l.s}</span></button>`).join("");
+}
+function lsnView(){
+ const L=LS[cur],el=$("#lsnView");$("#lsnList").hidden=true;el.hidden=false;
+ if(step<L.c.length){const[h,p]=L.c[step];el.innerHTML=`<div class="card art"><div class="lab">${L.t}, card ${step+1} of ${L.c.length}</div><h2 style="margin-top:6px">${h}</h2><p>${p}</p><div class="row"><button class="btn g" data-x="exit">Back</button><button class="btn" data-x="next">${step==L.c.length-1?"Take the quiz":"Next"}</button></div></div>`}
+ else if(qi<L.q.length){const[q,o,,w]=[L.q[qi][0],L.q[qi][1],L.q[qi][2],L.q[qi][3]];el.innerHTML=`<div class="card art"><div class="lab">Quiz ${qi+1} of ${L.q.length}</div><h2 style="margin-top:6px;font-size:22px">${q}</h2><div>${o.map((x,i)=>`<button class="opt" data-o="${i}">${x}</button>`).join("")}</div><div id="why" class="lab"></div></div>`}
+ else{const first=!S.done.includes(cur),gain=50+ok*25;if(first){S.done.push(cur);S.xp+=gain;const t=new Date().toDateString(),y=new Date(Date.now()-864e5).toDateString();if(S.last!==t){S.streak=S.last===y?S.streak+1:1;S.last=t}save()}
+  el.innerHTML=`<div class="card art"><h2>${ok==L.q.length?"Perfect score":"Course complete"}</h2><p>You got ${ok} of ${L.q.length}.${first?" +"+gain+" XP.":" Already completed, so no extra XP."}</p><button class="btn" data-x="exit">Back to courses</button></div>`;drawLs()}
+}
+$("#lsns").addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b){cur=+b.dataset.l;step=qi=ok=0;lsnView()}});
+$("#lsnView").addEventListener("click",e=>{
+ const x=e.target.dataset.x,o=e.target.closest("[data-o]");
+ if(x==="exit"){$("#lsnView").hidden=true;$("#lsnList").hidden=false;drawLs()}
+ if(x==="next"){step++;lsnView()}if(x==="q"){qi++;lsnView()}
+ if(o&&!o.disabled){const q=LS[cur].q[qi];document.querySelectorAll("#lsnView .opt").forEach((b,i)=>{b.disabled=true;if(i===q[2])b.classList.add("r")});
+  if(+o.dataset.o===q[2])ok++;else o.classList.add("w");
+  $("#why").innerHTML=`<p>${q[3]}</p><button class="btn" data-x="q">Continue</button>`}
+});
+
+/* ---------- Scam spotter ---------- */
+const SC=[["'Hi, I'm from wallet support. Your account is flagged. Send your 12 recovery words to verify.'",1,"Support never asks for your recovery phrase."],["Exchange email: 'A withdrawal was requested. If this was not you, open the app and secure your account.' No links, no requests.",0,"It sends you to the app and asks for nothing. Still verify inside your account."],["'Giving away 5,000 BTC! Send 0.1 BTC to get 0.2 back instantly.'",1,"Doubling giveaways are always scams."],["A friend texts: 'I made $400 this week with this token, buy before tomorrow!'",1,"Hype plus a deadline is a warning sign, even from a friend who may be hacked or fooled."]];
+let si=0,sc=0;
+function drawScam(){const b=$("#scamBox");
+ if(si>=SC.length){b.innerHTML=`<div class="card"><h3>${sc} of ${SC.length} correct</h3><p>Urgency, free money and requests for secrets mean stop.</p><button class="btn" data-s="again">Play again</button></div>`;return}
+ b.innerHTML=`<div class="card"><div class="lab">Message ${si+1} of ${SC.length}</div><div class="msg">${SC[si][0]}</div><div class="row"><button class="btn" data-s="y">Scam</button><button class="btn g" data-s="n">Looks legit</button></div><div id="sw"></div></div>`}
+$("#scamBox").addEventListener("click",e=>{const k=e.target.dataset.s;if(!k)return;
+ if(k==="again"){si=sc=0;drawScam();return}if(k==="next"){si++;drawScam();return}
+ const good=(k==="y")==!!SC[si][1];if(good)sc++;
+ $("#sw").innerHTML=`<p><b class="${good?'up':'dn'}">${good?"Correct.":"Not quite."}</b> ${SC[si][2]}</p><button class="btn" data-s="next">Next</button>`;
+ document.querySelectorAll("#scamBox [data-s=y],#scamBox [data-s=n]").forEach(x=>x.disabled=true)});
+
+/* ---------- Glossary ---------- */
+const G={"Altcoin":"Any cryptocurrency other than Bitcoin.","ATH":"All-time high: the highest price an asset has ever reached.","Block":"A batch of confirmed transactions added to the blockchain about every 10 minutes.","Blockchain":"A shared digital ledger copied across many computers.","Cold storage":"Keeping keys offline, such as on a hardware wallet or paper.","Custody":"Who holds the keys. Exchange means custodial; you means self-custody.","DCA":"Dollar-cost averaging: buying a fixed amount at regular intervals.","DeFi":"Financial apps on blockchains that run without a company in the middle.","Difficulty":"A number that sets how hard it is to mine a block. It adjusts every 2,016 blocks.","Fork":"A change in a blockchain's rules or a split into two chains.","Gas":"The fee paid to the network to process a transaction (Ethereum).","Genesis block":"The very first Bitcoin block, mined by Satoshi on 3 January 2009.","Halving":"An event every 210,000 blocks that cuts the mining reward in half.","Hash rate":"The total computing power securing a proof-of-work network.","HODL":"Slang for holding crypto long term instead of selling.","KYC":"Know Your Customer: ID checks that exchanges require.","Layer 2":"A network built on another chain to be faster and cheaper, like Lightning.","Lightning Network":"Bitcoin's layer 2 for fast, low-fee payments.","Market cap":"Price multiplied by circulating supply.","Mempool":"The waiting room for transactions that are not yet in a block.","Mining":"Using computers to propose new blocks and secure the network.","Node":"A computer that runs the software and checks every rule.","Private key":"The secret that controls your crypto. Never share it.","Proof of work":"A system where miners spend energy to prove they earned the right to add a block.","Rug pull":"When creators of a token drain the money and disappear.","Satoshi (sat)":"The smallest bitcoin unit: 1 BTC is 100,000,000 sats.","Satoshi Nakamoto":"The unknown creator of Bitcoin.","Seed phrase":"12 or 24 words that can restore your wallet. Keep offline and secret.","Slippage":"The gap between the price you expected and the price you got.","Stablecoin":"A token designed to stay at a fixed price, such as $1.","Staking":"Locking coins to help secure a proof-of-stake network and earn rewards.","UTXO":"Unspent transaction output: the chunks of bitcoin a wallet can spend.","Whale":"A wallet holding a very large amount of a coin."};
+function gloss(f=""){const r=Object.entries(G).filter(([k,v])=>(k+v).toLowerCase().includes(f.toLowerCase()));$("#terms").innerHTML=r.length?r.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join(""):'<p class="lab">No match.</p>'}
+$("#q").addEventListener("input",e=>gloss(e.target.value));
+
+/* ---------- Watchlist (saved on this device) ---------- */
+let WL=[];try{WL=JSON.parse(localStorage.getItem("bwwl")||"[]")}catch(e){}
+const NM={bitcoin:"Bitcoin",ethereum:"Ethereum",tether:"Tether",binancecoin:"BNB",solana:"Solana",ripple:"XRP","usd-coin":"USD Coin",cardano:"Cardano",dogecoin:"Dogecoin",litecoin:"Litecoin"};
+function drawWL(){
+ const b=$("#wlBox");
+ b.innerHTML=WL.length?WL.filter(id=>MK[id]).map(id=>{const c=MK[id];return `<div class="card"><div class="coin"><button class="star" data-w="${id}" aria-label="Remove ${c.name} from watchlist">★</button><span>${c.name}</span></div><div class="mono" style="font-size:22px;margin:8px 0 2px">${usd(c.current_price)}</div><div class="mono lab">${pct(c.price_change_percentage_24h)} 24h</div></div>`}).join(""):'<div class="card"><p style="margin:0">Your watchlist is empty. Tap the star next to any coin below to track it. It is saved on this device.</p></div>';
+}
+document.addEventListener("click",e=>{const s=e.target.closest("[data-w]");if(!s)return;const id=s.dataset.w;WL=WL.includes(id)?WL.filter(x=>x!==id):[...WL,id];try{localStorage.setItem("bwwl",JSON.stringify(WL))}catch(x){}drawMarkets()});
+
+/* ---------- Paper trading ---------- */
+const START=10000,FEE=.001;
+let SIM={cash:START,pos:{},log:[]},sideBuy=true;
+try{const x=JSON.parse(localStorage.getItem("bwsim")||"null");if(x&&typeof x.cash==="number")SIM=x}catch(e){}
+const saveSim=()=>{try{localStorage.setItem("bwsim",JSON.stringify(SIM))}catch(e){}};
+const px=id=>MK[id]?MK[id].current_price:null;
+const qf=q=>q.toFixed(q<1?6:2);
+function simTotal(){let t=SIM.cash;for(const id in SIM.pos){const p=px(id);if(p)t+=SIM.pos[id].q*p}return t}
+function drawSim(){
+ const sel=$("#sCoin");
+ if(!sel.options.length&&Object.keys(MK).length)sel.innerHTML=Object.keys(NM).filter(id=>MK[id]).map(id=>`<option value="${id}">${NM[id]}</option>`).join("");
+ const tot=simTotal(),pl=tot-START;
+ $("#simSum").innerHTML=[["Portfolio value",usd(tot)],["Cash",usd(SIM.cash)],["Profit / loss",`<span class="${pl>=0?'up':'dn'}">${pl>=0?"+":"-"}${usd(Math.abs(pl))}</span>`],["Return",pct(pl/START*100)]].map(x=>`<div class="card stat"><div class="lab">${x[0]}</div><div class="v mono">${x[1]}</div></div>`).join("");
+ const ids=Object.keys(SIM.pos);
+ $("#simHold").innerHTML=ids.length?`<table><thead><tr><th>Coin</th><th>Amount</th><th>Value</th><th>P/L</th></tr></thead><tbody>${ids.map(id=>{const p=SIM.pos[id],v=p.q*(px(id)||0),l=v-p.c;return `<tr><td>${NM[id]}</td><td class="mono">${qf(p.q)}</td><td class="mono">${usd(v)}</td><td class="mono ${l>=0?'up':'dn'}">${l>=0?"+":"-"}${usd(Math.abs(l))}</td></tr>`}).join("")}</tbody></table>`:'<p class="lab" style="margin:0">No holdings yet. Make your first buy.</p>';
+ $("#simLog").innerHTML=SIM.log.length?`<table><thead><tr><th>Time</th><th>Trade</th><th>Price</th><th>USD</th></tr></thead><tbody>${SIM.log.slice(0,10).map(x=>`<tr><td>${new Date(x.t).toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})}</td><td><b class="${x.s==="BUY"?'up':'dn'}">${x.s}</b> ${qf(x.q)} ${NM[x.id]}</td><td class="mono">${usd(x.pr)}</td><td class="mono">${usd(x.usd)}</td></tr>`).join("")}</tbody></table>`:'<p class="lab" style="margin:0">Your trades will show here.</p>';
+}
+function simEst(){
+ const id=$("#sCoin").value,pr=px(id),a=+$("#sAmt").value,e=$("#sEst");
+ if(!pr||!(a>0)){e.textContent="";return}
+ e.textContent=sideBuy?`You get about ${qf(a*(1-FEE)/pr)} ${NM[id]} at ${usd(pr)}. Fee: ${usd(a*FEE)}.`:`Sells about ${qf(a/pr)} ${NM[id]}. You receive ${usd(a*(1-FEE))} after the fee.`;
+}
+function simPct(p){
+ const id=$("#sCoin").value,pr=px(id);if(!pr)return;
+ const base=sideBuy?SIM.cash:(SIM.pos[id]?SIM.pos[id].q*pr:0);
+ $("#sAmt").value=(base*p/100).toFixed(sideBuy?2:6);simEst();
+}
+function setSide(b){sideBuy=b;$("#sBuy").setAttribute("aria-pressed",b);$("#sSell").setAttribute("aria-pressed",!b);$("#sGo").textContent=b?"Buy":"Sell";$("#sMsg").textContent="";simEst()}
+function simGo(){
+ const id=$("#sCoin").value,pr=px(id),m=$("#sMsg");let a=+$("#sAmt").value;
+ if(!pr||!(a>0)){m.textContent="Enter an amount first.";return}
+ if(sideBuy){
+  if(a>SIM.cash+.01){m.textContent="Not enough cash.";return}
+  a=Math.min(a,SIM.cash);const q=a*(1-FEE)/pr,p=SIM.pos[id]||{q:0,c:0};
+  p.q+=q;p.c+=a;SIM.pos[id]=p;SIM.cash-=a;SIM.log.unshift({t:Date.now(),s:"BUY",id,q,pr,usd:a});
+ }else{
+  const p=SIM.pos[id];if(!p||p.q<=0){m.textContent="You do not own this coin.";return}
+  if(a>p.q*pr+.01){m.textContent="You do not own that much.";return}
+  const q=Math.min(a/pr,p.q),f=q/p.q;
+  p.c-=p.c*f;p.q-=q;if(p.q<1e-12)delete SIM.pos[id];
+  SIM.cash+=q*pr*(1-FEE);SIM.log.unshift({t:Date.now(),s:"SELL",id,q,pr,usd:q*pr});
+ }
+ SIM.log=SIM.log.slice(0,50);saveSim();m.textContent=(sideBuy?"Bought ":"Sold ")+NM[id]+".";$("#sAmt").value="";simEst();drawSim();
+}
+$("#sBuy").onclick=()=>setSide(true);$("#sSell").onclick=()=>setSide(false);
+$("#sPct").onclick=e=>{const b=e.target.closest("[data-p]");if(b)simPct(+b.dataset.p)};
+$("#sAmt").oninput=simEst;$("#sCoin").onchange=simEst;$("#sGo").onclick=simGo;
+$("#sReset").onclick=()=>{if(confirm("Reset your paper portfolio to $10,000?")){SIM={cash:START,pos:{},log:[]};saveSim();drawSim()}};
+
+/* ---------- Price alerts (checked while the tab is open) ---------- */
+let AL=[],alDir="above";try{AL=JSON.parse(localStorage.getItem("bwal")||"[]")}catch(e){}
+const saveAL=()=>{try{localStorage.setItem("bwal",JSON.stringify(AL))}catch(e){}};
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display="none",9000)}
+$("#toast").onclick=()=>{$("#toast").style.display="none"};
+function drawAL(){
+ const sel=$("#aCoin");
+ if(!sel.options.length&&Object.keys(MK).length)sel.innerHTML=Object.keys(NM).filter(id=>MK[id]).map(id=>`<option value="${id}">${NM[id]}</option>`).join("");
+ const p=px(sel.value);$("#aNow").textContent=p?"Current price: "+usd(p):"";
+ const when=t=>new Date(t).toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+ $("#aList").innerHTML=AL.length?`<table><thead><tr><th>Coin</th><th>Condition</th><th>Now</th><th>Status</th><th></th></tr></thead><tbody>${AL.map(a=>`<tr><td>${NM[a.coin]}</td><td>${a.dir==="above"?"Above":"Below"} <span class="mono">${usd(a.target)}</span></td><td class="mono">${usd(px(a.coin)||0)}</td><td>${a.done?'<b class="up">Triggered '+when(a.at)+'</b>':'<span class="lab">Watching</span>'}</td><td><button class="btn g" data-ad="${a.id}">Remove</button></td></tr>`).join("")}</tbody></table>`:'<p class="lab" style="margin:0">No alerts yet. Add one above.</p>';
+ const n=$("#aNote"),b=$("#aNotif");
+ if(!("Notification" in window)){b.hidden=true;n.textContent="This browser does not support notifications. Alerts will still appear on the page."}
+ else if(Notification.permission==="granted"){b.hidden=true;n.textContent="Notifications are on."}
+ else if(Notification.permission==="denied"){b.hidden=true;n.textContent="Notifications are blocked in your browser settings. Alerts will still appear on the page."}
+ else{b.hidden=false;n.textContent=""}
+}
+function checkAlerts(){
+ let hit=false;
+ AL.forEach(a=>{if(a.done)return;const p=px(a.coin);
+  if(p&&(a.dir==="above"?p>=a.target:p<=a.target)){a.done=true;a.at=Date.now();hit=true;
+   const m=`${NM[a.coin]} is ${a.dir} ${usd(a.target)}. Now ${usd(p)}.`;toast("Price alert: "+m);
+   try{if("Notification" in window&&Notification.permission==="granted")new Notification("Blockwise price alert",{body:m})}catch(e){}}});
+ if(hit)saveAL();drawAL();
+}
+$("#aUp").onclick=()=>{alDir="above";$("#aUp").setAttribute("aria-pressed",true);$("#aDn").setAttribute("aria-pressed",false)};
+$("#aDn").onclick=()=>{alDir="below";$("#aDn").setAttribute("aria-pressed",true);$("#aUp").setAttribute("aria-pressed",false)};
+$("#aCoin").onchange=drawAL;
+$("#aNotif").onclick=()=>{try{Notification.requestPermission().then(drawAL)}catch(e){}};
+$("#aAdd").onclick=()=>{
+ const coin=$("#aCoin").value,t=+$("#aPx").value,p=px(coin),m=$("#aMsg");
+ if(!coin||!(t>0)){m.textContent="Enter a target price.";return}
+ if(p&&((alDir==="above"&&p>=t)||(alDir==="below"&&p<=t))){m.textContent=`${NM[coin]} is already ${alDir} that price (${usd(p)}).`;return}
+ AL.push({id:Date.now(),coin,dir:alDir,target:t,done:false});saveAL();$("#aPx").value="";m.textContent="Alert added.";drawAL();
+};
+$("#aList").onclick=e=>{const b=e.target.closest("[data-ad]");if(b){AL=AL.filter(a=>String(a.id)!==b.dataset.ad);saveAL();drawAL()}};
+
+/* ---------- Instagram follow popup (opens after 4 seconds, then not again for 7 days) ---------- */
+const IGK="bwig",igM=$("#igModal");let igLast=null;
+const igSeen=()=>{try{localStorage.setItem(IGK,Date.now())}catch(e){}};
+function igOpen(){igLast=document.activeElement;igM.classList.add("open");$("#igFollow").focus()}
+function igClose(){igM.classList.remove("open");igSeen();if(igLast&&igLast.focus)igLast.focus()}
+$("#igBtn").onclick=igOpen;$("#igLater").onclick=igClose;$("#igX").onclick=igClose;
+$("#igFollow").addEventListener("click",()=>{igSeen();igM.classList.remove("open")});
+igM.addEventListener("click",e=>{if(e.target===igM)igClose()});
+igM.addEventListener("keydown",e=>{if(e.key!=="Tab")return;const f=[...igM.querySelectorAll("button,a")],i=f.indexOf(document.activeElement);
+ if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&igM.classList.contains("open"))igClose()});
+setTimeout(()=>{let t=0;try{t=+localStorage.getItem(IGK)||0}catch(e){}if(Date.now()-t>7*864e5&&!igM.classList.contains("open"))igOpen()},4000);
+
+/* ---------- Router ---------- */
+const PG=["dash","bitcoin","alts","learn","sim","alerts","tools","safety","gloss"],MAP={"":"dash","altcoins":"alts","glossary":"gloss","simulator":"sim"};
+function route(){let p=location.hash.replace(/^#\/?/,"");p=MAP[p]||p;if(!PG.includes(p))p="dash";
+ PG.forEach(x=>$("#p-"+x).hidden=x!==p);document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.p===p));
+ if(p==="learn"){$("#lsnView").hidden=true;$("#lsnList").hidden=false}scrollTo(0,0)}
+addEventListener("hashchange",route);
+
+drawArt();drawLs();drawScam();gloss();drawAlts();drawHalving();route();
+drawStats();drawWL();drawSim();drawAL();loadAll();setInterval(loadAll,60000);
+</script>
+</body>
+</html>
