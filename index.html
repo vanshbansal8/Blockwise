@@ -8,11 +8,15 @@
 <meta property="og:type" content="website"><meta property="og:title" content="Blockwise: learn Bitcoin and crypto">
 <meta property="og:description" content="Live prices, a plain-English Bitcoin guide, courses, tools and a scam spotter. Free.">
 <meta name="twitter:card" content="summary">
+<script>try{if(localStorage.getItem("bwth")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <meta name="description" content="Bitcoin explained properly: how it works, who Satoshi is, how halving works. Live prices, courses, tools and a scam spotter.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23f7931a%22/><path d=%22M9 9h8a4 4 0 010 7H9zm0 7h9a4 4 0 010 8H9z%22 fill=%22%230e1117%22/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e1117;--p:#161b24;--p2:#1d2430;--ln:#283140;--tx:#e8ebf1;--mu:#8f9bb0;--or:#f7931a;--up:#3ddc97;--dn:#ff6b6b;--r:12px}
+:root{--bg:#0e1117;--p:#161b24;--p2:#1d2430;--ln:#283140;--tx:#e8ebf1;--mu:#8f9bb0;--or:#f7931a;--up:#3ddc97;--dn:#ff6b6b;--r:12px;--sub:#c6ccd9;--hd:rgba(14,17,23,.95);color-scheme:dark}
+:root[data-theme=light]{--bg:#f4f6fb;--p:#fff;--p2:#eceff6;--ln:#d8deea;--tx:#141922;--mu:#5b6678;--or:#b45309;--up:#0c9560;--dn:#d23b3b;--sub:#3a4457;--hd:rgba(244,246,251,.95);color-scheme:light}
+:root[data-theme=light] .btn:not(.g),:root[data-theme=light] .pill[aria-pressed=true]{color:#fff}
+:root[data-theme=light] .toast,:root[data-theme=light] .mbox{box-shadow:0 8px 30px rgba(20,25,34,.18)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.6 Manrope,system-ui,sans-serif}
 h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.01em}
@@ -20,7 +24,7 @@ a{color:inherit}button,input{font:inherit;color:inherit}button{cursor:pointer}
 :focus-visible{outline:3px solid var(--or);outline-offset:2px}
 .w{max-width:1040px;margin:0 auto;padding:0 18px}
 .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
-header{position:sticky;top:0;z-index:9;background:rgba(14,17,23,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
+header{position:sticky;top:0;z-index:9;background:var(--hd);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
 .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:20px;text-decoration:none}
 .brand svg{width:28px;height:28px}
@@ -40,7 +44,7 @@ h2{font-size:22px;font-weight:800;margin:30px 0 12px}
 select{width:100%;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:12px;margin:6px 0 12px}.gA{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
 @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.hm{display:none}}
 .card{background:var(--p);border:1px solid var(--ln);border-radius:var(--r);padding:18px}
-.card h3{font-size:18px;margin-bottom:6px}.card p{margin:0 0 10px;color:#c6ccd9}
+.card h3{font-size:18px;margin-bottom:6px}.card p{margin:0 0 10px;color:var(--sub)}
 .lab{font-size:13px;color:var(--mu)}
 .big{font-size:clamp(32px,7vw,46px);font-weight:800;line-height:1.1}
 .up{color:var(--up)}.dn{color:var(--dn)}
@@ -72,16 +76,19 @@ footer{border-top:1px solid var(--ln);color:var(--mu);font-size:13px;padding:22p
 .tl{list-style:none;margin:18px 0 0;padding:0 0 0 22px;border-left:2px solid var(--ln);max-width:66ch}
 .tl li{position:relative;margin:0 0 20px}.tl li::before{content:'';position:absolute;left:-30px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--up);border:3px solid var(--p)}
 .tl li.h::before{background:var(--or)}.tl li.c::before{background:var(--dn)}
-.tl .y{font:500 13px 'IBM Plex Mono',monospace;color:var(--or)}.tl b{display:block;font-size:17px}.tl span{color:#c6ccd9}
+.tl .y{font:500 13px 'IBM Plex Mono',monospace;color:var(--or)}.tl b{display:block;font-size:17px}.tl span{color:var(--sub)}
 .key{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mu);margin:8px 0}.key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--p2);border:1px solid var(--or);border-radius:12px;padding:12px 16px;display:none;z-index:60;max-width:92vw;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.5)}
 .ig{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--ln);border-radius:99px;padding:6px 12px;font-weight:600;font-size:13px}
 .ig svg{width:16px;height:16px}.ig:hover{border-color:var(--or)}
 .modal{position:fixed;inset:0;background:rgba(5,7,11,.72);display:none;place-items:center;z-index:80;padding:18px}.modal.open{display:grid}
 .mbox{position:relative;background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:28px 24px 22px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-.mbox p{color:#c6ccd9;margin:10px 0 18px}.mbox .btn{display:block;width:100%;margin-bottom:8px;text-align:center}
+.mbox p{color:var(--sub);margin:10px 0 18px}.mbox .btn{display:block;width:100%;margin-bottom:8px;text-align:center}
 .mx{position:absolute;top:8px;right:10px;background:none;border:0;font-size:26px;color:var(--mu);line-height:1;padding:4px 8px}
 .igi{width:56px;height:56px;border-radius:16px;margin:0 auto 14px;display:grid;place-items:center;color:#fff;background:linear-gradient(45deg,#f9a03f,#e1306c 55%,#833ab4)}.igi svg{width:30px;height:30px}
+.g4>*{min-width:0}
+@media(max-width:380px){.tick{display:none}}
+@media(max-width:760px){.tick{font-size:12px;white-space:nowrap}.tick span{display:none}.brand{font-size:18px;gap:6px}.brand svg{width:24px;height:24px}.top{gap:8px}.top>div:last-child{gap:6px!important}.ig{padding:6px 9px}.stat .v{font-size:19px}.stat{padding:12px}}
 [hidden]{display:none!important}
 svg.ch{width:100%;height:auto;display:block}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -92,7 +99,8 @@ svg.ch{width:100%;height:auto;display:block}
  <div class="top">
   <a class="brand" href="#/"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#f7931a"/><path d="M9 9h8a4 4 0 010 7H9zm0 7h9a4 4 0 010 8H9z" fill="#0e1117"/></svg>Blockwise</a>
   <div style="display:flex;align-items:center;gap:12px"><div class="tick mono" id="tick">BTC ...</div>
-   <button class="ig" id="igBtn" aria-label="Follow the creator on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span class="hm">Follow</span></button></div>
+   <button class="ig" id="igBtn" aria-label="Follow the creator on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span class="hm">Follow</span></button>
+   <button class="ig" id="thBtn" aria-label="Switch between light and dark theme" title="Switch theme"><span id="thI" aria-hidden="true">&#9728;</span></button></div>
  </div>
  <nav id="nav">
   <a href="#/" data-p="dash">Markets</a><a href="#/bitcoin" data-p="bitcoin">Bitcoin guide</a><a href="#/altcoins" data-p="alts">Other coins</a><a href="#/learn" data-p="learn">Courses</a><a href="#/simulator" data-p="sim">Simulator</a><a href="#/alerts" data-p="alerts">Alerts</a><a href="#/tools" data-p="tools">Tools</a><a href="#/safety" data-p="safety">Safety</a><a href="#/glossary" data-p="gloss">Glossary</a>
@@ -210,6 +218,12 @@ svg.ch{width:100%;height:auto;display:block}
  </div>
  <h2>Trade history</h2>
  <div class="card" style="overflow-x:auto" id="simLog"></div>
+ <h2>Leaderboard</h2>
+ <div class="card">
+  <p class="lab" id="lbInfo">Best return among all Blockwise players. Only your best score is kept. Scores are self-reported, so treat it as friendly competition.</p>
+  <div class="row" style="align-items:center"><input type="text" id="lbName" maxlength="16" placeholder="Nickname" aria-label="Nickname" style="max-width:220px;margin:0"><button class="btn" id="lbGo">Submit my score</button><span class="lab" id="lbMsg"></span></div>
+  <div id="lbList" style="margin-top:14px;overflow-x:auto"></div>
+ </div>
  <div class="row"><button class="btn g" id="sReset">Reset to $10,000</button></div>
 </section>
 
@@ -450,7 +464,13 @@ const LS=[
 {t:"Satoshis and Satoshi",s:"Units and the creator",c:[["What is a sat?","A satoshi is the smallest unit: 1 BTC equals 100,000,000 sats. You can buy a few thousand sats instead of a whole coin."],["Who is Satoshi?","The unknown creator of Bitcoin. They disappeared from public view in 2011, and their identity is still unproven."],["Why it is decentralized","Without a known leader, no one person can change Bitcoin's rules on their own. That was the intent."]],q:[["How many sats in 1 BTC?",["1 million","100 million","21 million"],1,"1 sat = 0.00000001 BTC."],["Do we know who Satoshi is?",["Yes, it is proven","No, it is unknown","Yes, it is an exchange"],1,"Many have claimed it; none have proven it."]]},
 {t:"Wallets and keys",s:"How you hold crypto",c:[["Keys, not coins","A wallet stores the keys that prove coins are yours. The coins live on the blockchain."],["Public vs private","Share your public address to get paid. Never share your private key or seed phrase."],["Custody","On an exchange they hold the keys. In your own wallet, you hold them and you are responsible for backups."]],q:[["Who should see your seed phrase?",["Support staff","Nobody","Your exchange"],1,"Anyone with it can take everything. Real support never asks."],["Where to store a seed phrase?",["Cloud note","Screenshot","Paper, offline"],2,"Online storage can be hacked."]]},
 {t:"Buying safely",s:"Your first purchase",c:[["Pick a reputable exchange","Use well-known, regulated platforms. Check fees, because 'free' trades often hide wider spreads."],["Secure the account","Use a unique password and authenticator-app 2FA. Avoid SMS-only security."],["Start small","Only use money you can afford to lose, and consider buying in small regular amounts rather than all at once."]],q:[["Best 2FA option?",["SMS","Authenticator app","None"],1,"SIM swaps can hijack text messages."],["How much should you start with?",["Everything you have","A small amount you can lose","A loan"],1,"Prices are volatile, so risk only what you can afford."]]},
-{t:"Scams and safety",s:"Protect your money",c:[["Free crypto is a trap","Giveaways and 'send 1, get 2' offers are scams. Nobody gives away coins."],["Fake support","Support will not DM you first or ask for your seed phrase."],["Too good to be true","Guaranteed high returns are almost always Ponzi schemes. Slow down when someone creates urgency."]],q:[["A DM says 'verify your wallet, send the 12 words'. You...",["Send them","Block and ignore","Send only half"],1,"That is a theft attempt."],["Promised returns of 5% a day are...",["Great","A red flag","Normal"],1,"No legitimate investment guarantees that."]]}
+{t:"Scams and safety",s:"Protect your money",c:[["Free crypto is a trap","Giveaways and 'send 1, get 2' offers are scams. Nobody gives away coins."],["Fake support","Support will not DM you first or ask for your seed phrase."],["Too good to be true","Guaranteed high returns are almost always Ponzi schemes. Slow down when someone creates urgency."]],q:[["A DM says 'verify your wallet, send the 12 words'. You...",["Send them","Block and ignore","Send only half"],1,"That is a theft attempt."],["Promised returns of 5% a day are...",["Great","A red flag","Normal"],1,"No legitimate investment guarantees that."]]},
+{t:"Ethereum and smart contracts",s:"Programmable money",c:[["More than a coin","Ethereum is a blockchain that can run programs. Developers build apps, tokens and games on it, and its coin, ETH, pays the network fees."],["Smart contracts","A smart contract is code stored on the blockchain that runs exactly as written when its conditions are met. No company needs to be in the middle."],["The Merge","In September 2022 Ethereum switched from mining to proof of stake, where people lock up ETH to secure the network. This cut its energy use by more than 99%."]],q:[["What is a smart contract?",["A legal document","Code on a blockchain that runs automatically","A type of wallet"],1,"It is a program that executes when its conditions are met."],["What did the Merge change?",["It capped ETH supply","It moved Ethereum to proof of stake","It created Bitcoin"],1,"Mining was replaced by staking."],["ETH is mainly used to...",["Pay network fees and stake","Store photos","Replace passwords"],0,"Every transaction needs ETH for gas, and staking helps secure the network."]]},
+{t:"Stablecoins",s:"Crypto that tries to stay at $1",c:[["Why they exist","Stablecoins aim to hold a fixed price, usually $1. They let you move dollar value on a blockchain without the price swings of Bitcoin."],["How they are backed","Fiat-backed coins like USDC and USDT hold reserves such as cash and short-term government bonds. Crypto-backed ones like DAI use other crypto as collateral."],["They can fail","TerraUSD, an algorithmic stablecoin, lost its peg and collapsed in May 2022. Even backed coins carry issuer and reserve risk, so check who is behind them."]],q:[["What is a stablecoin designed to do?",["Double in value","Hold a steady price like $1","Replace Bitcoin"],1,"Stability is the whole point, which is why people use them for trading and payments."],["What happened to TerraUSD in 2022?",["It lost its peg and collapsed","It became a bank","It was banned worldwide"],0,"Algorithmic designs without solid reserves proved fragile."],["Are stablecoins risk-free?",["Yes","No, they carry issuer and reserve risk","Only on weekends"],1,"A coin can drift off its peg if the issuer or reserves are in doubt."]]},
+{t:"Layer 2s and fees",s:"Why some networks are cheaper",c:[["Why fees spike","Blockchains have limited space in each block. When many people transact at once, they bid against each other and fees rise."],["Layer 2s","Networks like Arbitrum, Optimism and Base bundle many transactions and post a compact record to Ethereum. You get lower fees while still relying on Ethereum for security."],["Bitcoin's version","The Lightning Network does something similar for Bitcoin, using payment channels for instant, low-fee payments. Moving funds between layers uses bridges, a common hacking target, so stick to well-known ones."]],q:[["What do layer 2s do?",["Bundle transactions to cut fees","Mint new coins","Replace wallets"],0,"They process transactions off the main chain and settle in batches."],["What is the Lightning Network?",["A Bitcoin layer 2 for fast payments","A new coin","An exchange"],0,"It uses payment channels for quick, cheap Bitcoin payments."],["Which part of using layer 2s carries extra risk?",["Bridging funds","Checking prices","Reading about them"],0,"Bridges have been hacked many times. Use reputable ones and start small."]]},
+{t:"Reading the market",s:"Market cap, volume and hype",c:[["Price is not size","A coin priced at $0.50 is not cheaper than one at $50. Market cap, price times circulating supply, shows how big a project actually is."],["Volume and volatility","Trading volume shows how much changes hands. Volatility is how much the price swings. Small coins with low volume can move 30% in a day and can be hard to sell."],["Do not chase","A coin that already jumped 300% is often where late buyers get hurt. Decide your plan before you buy and only use money you can afford to lose."]],q:[["Market cap equals...",["Price x circulating supply","Price x 24h volume","Coins ever mined only"],0,"It is the best quick measure of a coin's size."],["Is a $0.001 coin automatically cheap?",["Always","Not necessarily, supply matters","Yes, it must rise"],1,"A huge supply can make a tiny price still a big market cap."],["Buying after a 300% surge is...",["Risk-free","Often where late buyers get hurt","Guaranteed to continue"],1,"Chasing hype is a common way to lose money."]]},
+{t:"DeFi in plain English",s:"Finance without the middleman",c:[["Banking without the bank","DeFi (decentralized finance) means financial apps run by smart contracts: swapping tokens, lending, borrowing and earning interest straight from your wallet."],["How swaps work","On a decentralized exchange like Uniswap, people deposit token pairs into pools. You swap against the pool, and the people who supplied it earn fees."],["The risks","Smart contract bugs, hacks, rug pulls and impermanent loss are real. Very high yields usually mean very high risk, so start small and read what you sign."]],q:[["A DEX lets you...",["Swap tokens from your own wallet","Reverse any transaction","Get a bank loan"],0,"You trade directly from your wallet with no account."],["Impermanent loss can happen when...",["You supply tokens to a liquidity pool","You hold Bitcoin","You use 2FA"],0,"If the pooled tokens' prices diverge, you can end up with less than if you had just held."],["A 1,000% APY usually signals...",["Free money","Very high risk","A government guarantee"],1,"If the return is huge, someone is taking big risk, and it might be you."]]},
+{t:"Security upgrade",s:"Level up your protection",c:[["Hardware wallets","A hardware wallet keeps your keys on a small offline device and makes you confirm each transaction on its screen. It is the standard for larger amounts. Buy only from the maker."],["Phishing and clipboard tricks","Fake sites and malware that swaps copied addresses are common. Check the first and last characters of any address you paste, and bookmark real sites."],["Approvals and backups","Connecting a wallet can give a site permission to spend your tokens. Review and revoke old approvals, and keep your seed phrase backup on paper in more than one safe place."]],q:[["Where do a hardware wallet's keys live?",["On an offline device","On the exchange","In your email"],0,"Keeping keys offline protects them from online attacks."],["Why check an address after pasting it?",["Malware can swap copied addresses","It makes it faster","Wallets require it"],0,"Always verify the start and end before you send."],["What should you do with old token approvals?",["Review and revoke them","Ignore them","Share them"],0,"Old approvals can be abused if a contract is compromised."]]}
 ];
 let S={xp:0,done:[],last:"",streak:0},cur=0,step=0,qi=0,ok=0;
 try{S=Object.assign(S,JSON.parse(localStorage.getItem("bw")||"{}"))}catch(e){}
@@ -601,11 +621,40 @@ igM.addEventListener("keydown",e=>{if(e.key!=="Tab")return;const f=[...igM.query
 addEventListener("keydown",e=>{if(e.key==="Escape"&&igM.classList.contains("open"))igClose()});
 setTimeout(()=>{let t=0;try{t=+localStorage.getItem(IGK)||0}catch(e){}if(Date.now()-t>7*864e5&&!igM.classList.contains("open"))igOpen()},4000);
 
+/* ---------- Theme ---------- */
+function setTheme(t){document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("bwth",t)}catch(e){}$("#thI").innerHTML=t==="light"?"&#9790;":"&#9728;";const m=document.querySelector('meta[name=theme-color]');if(m)m.content=t==="light"?"#f4f6fb":"#0e1117"}
+$("#thBtn").onclick=()=>setTheme(document.documentElement.getAttribute("data-theme")==="light"?"dark":"light");
+setTheme(document.documentElement.getAttribute("data-theme")==="light"?"light":"dark");
+
+/* ---------- Leaderboard (needs the /api/leaderboard backend) ---------- */
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+try{$("#lbName").value=localStorage.getItem("bwnick")||""}catch(e){}
+async function loadLB(){
+ const el=$("#lbList");
+ try{
+  const r=await fetch("/api/leaderboard");const d=await r.json();
+  if(!d.configured){el.innerHTML='<p class="lab" style="margin:0">The leaderboard is not switched on yet.</p>';$("#lbGo").disabled=true;return}
+  $("#lbGo").disabled=false;
+  el.innerHTML=d.top.length?`<table><thead><tr><th>#</th><th>Player</th><th>Best return</th><th>Portfolio</th></tr></thead><tbody>${d.top.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td class="mono">${pct(x.ret)}</td><td class="mono">${usd(START*(1+x.ret/100))}</td></tr>`).join("")}</tbody></table>`:'<p class="lab" style="margin:0">No scores yet. Be the first.</p>';
+ }catch(e){el.innerHTML='<p class="lab" style="margin:0">Leaderboard unavailable right now.</p>';$("#lbGo").disabled=true}
+}
+$("#lbGo").onclick=async()=>{
+ const name=$("#lbName").value.trim(),m=$("#lbMsg");
+ if(!/^[A-Za-z0-9 _.-]{2,16}$/.test(name)){m.textContent="Use 2 to 16 letters, numbers, spaces, _ . or -";return}
+ if(!SIM.log.length){m.textContent="Make at least one trade first.";return}
+ m.textContent="Submitting...";
+ try{
+  const r=await fetch("/api/leaderboard",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({name,value:simTotal()})});
+  const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not submit.");
+  try{localStorage.setItem("bwnick",name)}catch(e){}m.textContent="Score submitted.";loadLB();
+ }catch(e){m.textContent=e.message}
+};
+
 /* ---------- Router ---------- */
 const PG=["dash","bitcoin","alts","learn","sim","alerts","tools","safety","gloss"],MAP={"":"dash","altcoins":"alts","glossary":"gloss","simulator":"sim"};
 function route(){let p=location.hash.replace(/^#\/?/,"");p=MAP[p]||p;if(!PG.includes(p))p="dash";
  PG.forEach(x=>$("#p-"+x).hidden=x!==p);document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.p===p));
- if(p==="learn"){$("#lsnView").hidden=true;$("#lsnList").hidden=false}scrollTo(0,0)}
+ if(p==="learn"){$("#lsnView").hidden=true;$("#lsnList").hidden=false}if(p==="sim")loadLB();scrollTo(0,0)}
 addEventListener("hashchange",route);
 
 drawArt();drawLs();drawScam();gloss();drawAlts();drawHalving();route();
