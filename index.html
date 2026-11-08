@@ -220,7 +220,7 @@ svg.ch{width:100%;height:auto;display:block}
  <div class="card" style="overflow-x:auto" id="simLog"></div>
  <h2>Leaderboard</h2>
  <div class="card">
-  <p class="lab" id="lbInfo">Best return among all Blockwise players. Only your best score is kept. Scores are self-reported, so treat it as friendly competition.</p>
+  <p class="lab" id="lbInfo">Best return among all Blockwise players. Only your best score is kept. Your nickname is locked to this device once you submit, so nobody else can post under it. Scores are self-reported, so treat it as friendly competition.</p>
   <div class="row" style="align-items:center"><input type="text" id="lbName" maxlength="16" placeholder="Nickname" aria-label="Nickname" style="max-width:220px;margin:0"><button class="btn" id="lbGo">Submit my score</button><span class="lab" id="lbMsg"></span></div>
   <div id="lbList" style="margin-top:14px;overflow-x:auto"></div>
  </div>
@@ -627,6 +627,7 @@ $("#thBtn").onclick=()=>setTheme(document.documentElement.getAttribute("data-the
 setTheme(document.documentElement.getAttribute("data-theme")==="light"?"light":"dark");
 
 /* ---------- Leaderboard (needs the /api/leaderboard backend) ---------- */
+function getTok(){let t="";try{t=localStorage.getItem("bwtok")||""}catch(e){}if(!/^[a-f0-9]{32}$/.test(t)){t=[...crypto.getRandomValues(new Uint8Array(16))].map(x=>x.toString(16).padStart(2,"0")).join("");try{localStorage.setItem("bwtok",t)}catch(e){}}return t}
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 try{$("#lbName").value=localStorage.getItem("bwnick")||""}catch(e){}
 async function loadLB(){
@@ -644,7 +645,7 @@ $("#lbGo").onclick=async()=>{
  if(!SIM.log.length){m.textContent="Make at least one trade first.";return}
  m.textContent="Submitting...";
  try{
-  const r=await fetch("/api/leaderboard",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({name,value:simTotal()})});
+  const r=await fetch("/api/leaderboard",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({name,value:simTotal(),token:getTok()})});
   const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not submit.");
   try{localStorage.setItem("bwnick",name)}catch(e){}m.textContent="Score submitted.";loadLB();
  }catch(e){m.textContent=e.message}
