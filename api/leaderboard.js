@@ -5,11 +5,16 @@
 const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const TOK = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 const KEY = "bw:lb";
+const OWN = "bw:owners"; // nickname (lowercase) -> sha256(secret token) + "|" + display name
+const crypto = require("crypto");
 
 async function redis(cmds) {
-  const r = await fetch(URL_ + "/pipeline", { method: "POST", headers: { Authorization: "Bearer " + TOK, "content-type": "application/json" }, body: JSON.stringify(cmds) });
-  if (!r.ok) throw new Error("redis " + r.status);
-  return (await r.json()).map(x => x.result);
+  const r = await fetch(URL_ + "/pipeline", { method: "POST", headers: { Authorization: "Bearer " + TOK, "content-type": "application/json" }, body: JSON.stringify(cmds.map(c => c.map(String))) });
+  const out = await r.json().catch(() => null);
+  if (!r.ok) throw new Error("database " + r.status + (out && out.error ? ": " + out.error : ""));
+  const bad = Array.isArray(out) && out.find(x => x && x.error);
+  if (bad) throw new Error(bad.error);
+  return out.map(x => x.result);
 }
 
 module.exports = async (req, res) => {
@@ -21,14 +26,20 @@ module.exports = async (req, res) => {
   try {
     if (req.method === "POST") {
       const b = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
-      const name = String(b.name || "").trim(), value = Number(b.value);
+      const name = String(b.name || "").trim(), value = Number(b.value), token = String(b.token || "");
       if (!/^[A-Za-z0-9 _.-]{2,16}$/.test(name)) return res.status(400).json({ error: "Invalid nickname" });
+      if (!/^[a-f0-9]{32,64}$/.test(token)) return res.status(400).json({ error: "Please refresh the page and try again." });
       if (!isFinite(value) || value <= 0 || value > 1e6) return res.status(400).json({ error: "Invalid score" });
       const ip = (req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
       const [n] = await redis([["INCR", "bw:rl:" + ip], ["EXPIRE", "bw:rl:" + ip, 60]]);
       if (n > 5) return res.status(429).json({ error: "Too many submissions. Try again in a minute." });
       const ret = Math.round((value - 10000) / 10000 * 10000) / 100;
-      await redis([["ZADD", KEY, "GT", ret, name], ["ZREMRANGEBYRANK", KEY, 0, -501]]);
+      // Nickname ownership: the first device to use a name claims it; only that device can update it.
+      const hash = crypto.createHash("sha256").update(token).digest("hex");
+      const [, owner] = await redis([["HSETNX", OWN, name.toLowerCase(), hash + "|" + name], ["HGET", OWN, name.toLowerCase()]]);
+      if (!String(owner).startsWith(hash + "|")) return res.status(409).json({ error: "That nickname is already taken. Please choose another." });
+      const display = String(owner).slice(65);
+      await redis([["ZADD", KEY, "GT", ret, display], ["ZREMRANGEBYRANK", KEY, 0, -501]]);
       return res.status(200).json({ ok: true });
     }
     const [raw] = await redis([["ZREVRANGE", KEY, 0, 19, "WITHSCORES"]]);
@@ -37,6 +48,6 @@ module.exports = async (req, res) => {
     res.setHeader("Cache-Control", "public, s-maxage=10, stale-while-revalidate=30");
     res.status(200).json({ configured: true, top });
   } catch (e) {
-    res.status(502).json({ error: "Leaderboard unavailable" });
+    res.status(502).json({ error: "Leaderboard error: " + String((e && e.message) || e).slice(0, 140) });
   }
 };
