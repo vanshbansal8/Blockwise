@@ -1,15 +1,18 @@
 # Blockwise
 
-Free Bitcoin and crypto education site with live prices. Plain HTML plus two small serverless functions. No database, no accounts, no build step.
+Free Bitcoin and crypto education site: guide, 12 courses, practice trading simulator, price alerts, headlines, "what if I had invested" calculator, shareable result cards and certificates. Plain HTML plus a few small serverless functions. No accounts and no tracking.
 
-## Structure
-- `index.html` : the whole front end
-- `api/markets.js` : live prices, block height, fear and greed (CoinGecko, falls back to CryptoCompare)
-- `api/chart.js` : Bitcoin price chart (1D, 7D, 30D, 1Y)
+## Files (all at the top level of the repo, except `api/`)
+- `index.html` : the whole app (fonts are embedded)
+- `privacy.html`, `terms.html`, `cookies.html`, `legal.css` : legal pages
+- `manifest.webmanifest`, `sw.js`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png` : install to home screen
+- `vercel.json` : security headers (strict Content-Security-Policy)
+- `OFL.txt` : font licence
+- `COMPLIANCE.md` : audit notes and things to review
+- `api/markets.js`, `api/chart.js` : prices, charts, block height, sentiment
+- `api/history.js` : price history for the "what if" calculator
+- `api/news.js` : headlines from public RSS feeds
+- `api/leaderboard.js` : leaderboard (needs Upstash Redis connected in Vercel)
 
 ## Deploy
-1. Push this folder to a GitHub repo (keep `index.html` and `api/` at the repo root).
-2. On Vercel: Add New > Project > import the repo > Deploy. Framework preset: Other. No build command.
-3. Add your custom domain under Project > Settings > Domains.
-
-The `/api` routes only run on Vercel (or `vercel dev` locally). Opening index.html straight from your computer will not load prices.
+Push to GitHub, import in Vercel (framework: Other, no build command), connect Upstash Redis under Storage, redeploy.
