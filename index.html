@@ -286,7 +286,7 @@ svg.ch{width:100%;height:auto;display:block}
   <div class="grid g2">
    <div><label class="lab" for="wiA">Amount (USD)</label><input type="number" id="wiA" min="1" step="any" value="1000">
    <label class="lab" for="wiD">Buy date</label><input type="date" id="wiD">
-   <div class="rg" id="wiQ"><button class="pill" data-y="1">1 year ago</button><button class="pill" data-y="3">3 years ago</button><button class="pill" data-y="5">5 years ago</button><button class="pill" data-h="1">Last halving</button></div></div>
+   <div class="rg" id="wiQ"><button class="pill" data-y="1">1 year ago</button><button class="pill" data-y="3">3 years ago</button><button class="pill" data-y="5">5 years ago</button><button class="pill" data-h="1">Last halving</button></div><p class="lab" id="wiS" style="margin:10px 0 0"></p></div>
    <div id="wiR"><p class="lab" style="margin:0">Loading price history...</p></div>
   </div>
   <div id="wiC" style="margin-top:12px"></div>
@@ -344,7 +344,7 @@ svg.ch{width:100%;height:auto;display:block}
  <p id="iosTip" hidden>To install on iPhone: tap Share, then Add to Home Screen.</p>
  <p>Blockwise is free and is for education only. It is not financial advice. The simulator uses virtual money.</p>
  <p><b>Risk warning:</b> Crypto products and NFTs are unregulated and can be highly risky. There may be no regulatory recourse for any loss from such transactions.</p>
- <p>Data: prices by <a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer">CoinGecko</a> and CryptoCompare, Fear and Greed index by <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank" rel="noopener noreferrer">alternative.me</a>, block data from mempool.space and Blockstream. Headlines belong to their publishers.</p>
+ <p>Data: prices by <a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer">CoinGecko</a> and CryptoCompare, price history also from Bitstamp and Blockchain.com, Fear and Greed index by <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank" rel="noopener noreferrer">alternative.me</a>, block data from mempool.space and Blockstream. Headlines belong to their publishers.</p>
 </div></footer>
 
 <script>
@@ -723,7 +723,7 @@ let HIST=null;
 const ymd=y=>{const d=new Date();d.setUTCFullYear(d.getUTCFullYear()+y);return d.toISOString().slice(0,10)};
 async function loadHist(){
  if(HIST){wiCalc();return}
- try{const r=await fetch("/api/history");if(!r.ok)throw 0;const d=await r.json();HIST=d.data;
+ try{const r=await fetch("/api/history");if(!r.ok)throw 0;const d=await r.json();HIST=d.data;const fd=(x,o)=>new Date(x).toLocaleDateString("en-US",{...o,timeZone:"UTC"});$("#wiS").textContent="Price history: "+fd(HIST[0][0],{month:"short",year:"numeric"})+" to "+fd(HIST[HIST.length-1][0],{month:"short",day:"numeric",year:"numeric"})+" ("+(d.source||"daily closes")+")."+(HIST.length<500?" Only the last 12 months are available right now.":"");
   const D=$("#wiD");D.min=new Date(HIST[0][0]).toISOString().slice(0,10);D.max=new Date(HIST[HIST.length-1][0]).toISOString().slice(0,10);
   if(!D.value)D.value=ymd(-1)<D.min?D.min:ymd(-1);wiCalc()}
  catch(e){$("#wiR").innerHTML='<p class="lab" style="margin:0">Historical prices are unavailable right now.</p>'}
