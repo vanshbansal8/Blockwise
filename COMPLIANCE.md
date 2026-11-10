@@ -29,6 +29,7 @@ This is a practical engineering checklist, **not legal advice**. Have a qualifie
 | Upstash Redis | Leaderboard | Nickname, score, hashed device code, 60s rate-limit counters | Choose an EU region if most visitors are in the EU |
 | CoinGecko | Prices and charts | None about users | Attribution shown in footer. Check their API terms for your usage. |
 | CryptoCompare | Price fallback and price history | None about users | Check their terms for your usage |
+| Bitstamp, Blockchain.com | Long price history for the "what if" calculator (fallbacks) | None about users | Check their terms for your usage |
 | mempool.space, Blockstream | Block height | None about users | |
 | alternative.me | Fear and Greed index | None about users | Attribution shown in footer |
 | CoinDesk, Cointelegraph, Bitcoin Magazine, Decrypt | Headlines via public RSS | None about users | Only headline + link + source shown. **Check each publisher's terms for RSS reuse and remove any feed that does not allow it** (edit the list at the top of `api/news.js`). |
