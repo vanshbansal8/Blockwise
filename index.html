@@ -7,7 +7,10 @@
 <meta name="theme-color" content="#0e1117">
 <meta property="og:type" content="website"><meta property="og:title" content="Blockwise: learn Bitcoin and crypto">
 <meta property="og:description" content="Live prices, a plain-English Bitcoin guide, courses, tools and a scam spotter. Free.">
-<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://blockwise.cc.cd/">
+<meta property="og:site_name" content="Blockwise"><meta property="og:url" content="https://blockwise.cc.cd/">
+<meta property="og:image" content="https://blockwise.cc.cd/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Blockwise: learn Bitcoin and crypto, free">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Blockwise: learn Bitcoin and crypto"><meta name="twitter:description" content="Live prices, a plain-English Bitcoin guide, courses, tools and a scam spotter. Free."><meta name="twitter:image" content="https://blockwise.cc.cd/og-image.png">
 <script>try{if(localStorage.getItem("bwth")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <meta name="description" content="Bitcoin explained in plain English: how it works, who Satoshi is, how halving works. Live prices, courses, tools and a scam spotter.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%23f7931a%22/><g fill=%22%230e1117%22><rect x=%2217%22 y=%2214%22 width=%229%22 height=%2236%22 rx=%223%22/><path d=%22M31 14h5.5a7.75 7.75 0 0 1 0 15.5H31a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z%22/><path d=%22M31 33.5h7.5a8.25 8.25 0 0 1 0 16.5H31a2 2 0 0 1-2-2v-12.5a2 2 0 0 1 2-2z%22/></g></svg>">
@@ -104,6 +107,7 @@ footer p{max-width:80ch;margin:8px 0}footer p a{color:var(--mu)}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}.kv b{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--or)}
 .mbox.wide{max-width:520px;text-align:left;max-height:88vh;overflow:auto}.mbox.wide .btn{margin-top:8px}
 canvas.pv{width:100%;max-width:520px;border-radius:12px;border:1px solid var(--ln);display:block;margin:14px 0 4px}
+.rep{background:none;border:0;color:var(--mu);font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px 2px}.rep:hover{color:var(--tx)}
 [hidden]{display:none!important}
 svg.ch{width:100%;height:auto;display:block}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -252,11 +256,13 @@ svg.ch{width:100%;height:auto;display:block}
  <div class="card" style="overflow-x:auto" id="simLog"></div>
  <h2>Leaderboard</h2>
  <div class="card">
-  <p class="lab" id="lbInfo">Best return among all Blockwise players. Only your best score is kept. Your nickname is locked to this device once you submit, so nobody else can post under it. Scores are self-reported, so treat it as friendly competition.</p>
+  <p class="lab" id="lbInfo">Weekly and monthly boards rank your gain during that period, so newcomers can compete. All time ranks total return. Only your best score is kept. Your nickname is locked to this device once you submit, so nobody else can post under it. Scores are self-reported, so treat it as friendly competition.</p>
   <div class="row" style="align-items:center"><input type="text" id="lbName" maxlength="16" placeholder="Nickname" aria-label="Nickname" style="max-width:220px;margin:0"><button class="btn" id="lbGo">Submit my score</button><span class="lab" id="lbMsg"></span></div>
   <label class="chk"><input type="checkbox" id="lbOk"><span>I am 18 or older (or have a parent or guardian's permission), and I agree to show my nickname and score publicly on the leaderboard. I have read the <a href="/privacy" target="_blank" rel="noopener">privacy policy</a> and I am not using my real name or personal details.</span></label>
   <div class="row"><button class="btn g" id="lbDel" hidden>Remove my score</button></div>
-  <div id="lbList" style="margin-top:14px;overflow-x:auto"></div>
+  <div class="rg" id="lbP" style="margin-top:14px"><button class="pill" data-p="week" aria-pressed="true">This week</button><button class="pill" data-p="month" aria-pressed="false">This month</button><button class="pill" data-p="all" aria-pressed="false">All time</button></div>
+  <p class="lab" id="lbL" style="margin:2px 0 0"></p>
+  <div id="lbList" style="margin-top:8px;overflow-x:auto"></div>
  </div>
  <div class="row"><button class="btn g" id="sReset">Reset to $10,000</button></div>
 </section>
@@ -441,7 +447,7 @@ async function loadAll(){
   MK={};d.coins.forEach(c=>MK[c.id]={id:c.id,name:c.name,symbol:c.symbol,current_price:c.price,price_change_percentage_24h:c.change24h,price_change_percentage_7d_in_currency:c.change7d,market_cap:c.cap,sparkline_in_7d:{price:c.spark}});
   BTC=MK.bitcoin;HEIGHT=d.height;FNG=d.fng;CD={};
   drawMarkets();drawAlts();drawHalving();drawStats();
-  $("#stamp").textContent="Prices update every minute. Last update "+new Date().toLocaleTimeString();
+  $("#stamp").textContent=d.stale?"Live price sources are unavailable right now. Showing prices saved "+ago(d.cachedAt)+".":"Prices update every minute. Last update "+new Date().toLocaleTimeString();
  }catch(e){await loadMarkets();await loadHeight();drawStats()}
 }
 function drawStats(){
@@ -582,7 +588,7 @@ const px=id=>MK[id]?MK[id].current_price:null;
 const qf=q=>q.toFixed(q<1?6:2);
 function simTotal(){let t=SIM.cash;for(const id in SIM.pos){const p=px(id);if(p)t+=SIM.pos[id].q*p}return t}
 function drawSim(){
- const sel=$("#sCoin");
+ ensureBase();const sel=$("#sCoin");
  if(!sel.options.length&&Object.keys(MK).length)sel.innerHTML=Object.keys(NM).filter(id=>MK[id]).map(id=>`<option value="${id}">${NM[id]}</option>`).join("");
  const tot=simTotal(),pl=tot-START;
  $("#simSum").innerHTML=[["Portfolio value",usd(tot)],["Cash",usd(SIM.cash)],["Profit / loss",`<span class="${pl>=0?'up':'dn'}">${pl>=0?"+":"-"}${usd(Math.abs(pl))}</span>`],["Return",pct(pl/START*100)]].map(x=>`<div class="card stat"><div class="lab">${x[0]}</div><div class="v mono">${x[1]}</div></div>`).join("");
@@ -661,16 +667,22 @@ $("#aList").onclick=e=>{const b=e.target.closest("[data-ad]");if(b){AL=AL.filter
 
 /* ---------- Instagram follow popup (opens after 4 seconds, then not again for 7 days) ---------- */
 const IGK="bwig",igM=$("#igModal");let igLast=null;
-const igSeen=()=>{try{localStorage.setItem(IGK,Date.now())}catch(e){}};
+function igState(){let s={};try{const v=localStorage.getItem(IGK);if(v){try{s=JSON.parse(v)}catch(e){}if(!s||typeof s!=="object")s={d:+v||0}}}catch(e){}return s}
+function igSave(k){const s=igState();s[k]=Date.now();try{localStorage.setItem(IGK,JSON.stringify(s))}catch(e){}}
+const igSeen=()=>igSave("d");
 function igOpen(){igLast=document.activeElement;igM.classList.add("open");$("#igFollow").focus()}
 function igClose(){igM.classList.remove("open");igSeen();if(igLast&&igLast.focus)igLast.focus()}
 $("#igBtn").onclick=igOpen;$("#igLater").onclick=igClose;$("#igX").onclick=igClose;
-$("#igFollow").addEventListener("click",()=>{igSeen();igM.classList.remove("open")});
+$("#igFollow").addEventListener("click",()=>{igSave("f");igM.classList.remove("open")});
 igM.addEventListener("click",e=>{if(e.target===igM)igClose()});
 igM.addEventListener("keydown",e=>{if(e.key!=="Tab")return;const f=[...igM.querySelectorAll("button,a")],i=f.indexOf(document.activeElement);
  if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}});
 addEventListener("keydown",e=>{if(e.key==="Escape"&&igM.classList.contains("open"))igClose()});
-function igMaybe(){let t=0;try{t=+localStorage.getItem(IGK)||0}catch(e){}if(Date.now()-t>7*864e5&&!igM.classList.contains("open")&&!$("#cb").classList.contains("on"))igOpen()}
+// Shows at most once per visit; not for 24 hours after "Maybe later"; not for 30 days after tapping Follow.
+function igMaybe(){const s=igState(),n=Date.now();let shown=false;try{shown=!!sessionStorage.getItem("bwigs")}catch(e){}
+ if(shown||igM.classList.contains("open")||$("#psModal").classList.contains("open"))return;
+ if(n-(s.f||0)<30*864e5||n-(s.d||0)<864e5)return;
+ try{sessionStorage.setItem("bwigs","1")}catch(e){}igOpen()}
 setTimeout(igMaybe,4000);
 
 /* ---------- Theme ---------- */
@@ -682,15 +694,24 @@ setTheme(document.documentElement.getAttribute("data-theme")==="light"?"light":"
 function getTok(){let t="";try{t=localStorage.getItem("bwtok")||""}catch(e){}if(!/^[a-f0-9]{32}$/.test(t)){t=[...crypto.getRandomValues(new Uint8Array(16))].map(x=>x.toString(16).padStart(2,"0")).join("");try{localStorage.setItem("bwtok",t)}catch(e){}}return t}
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 try{$("#lbName").value=localStorage.getItem("bwnick")||""}catch(e){}
+const BASE_TITLE=document.title,TITLES={dash:"Bitcoin and crypto markets",bitcoin:"Bitcoin guide",alts:"Other coins explained",learn:"Crypto courses and quizzes",sim:"Paper trading simulator",alerts:"Crypto price alerts",news:"Bitcoin headlines",tools:"Bitcoin tools and calculators",safety:"Crypto scam spotter",gloss:"Crypto glossary"};
+function periodIds(){const n=new Date(),d=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate())),mon=new Date(d.getTime()-((d.getUTCDay()+6)%7)*864e5);return{w:mon.toISOString().slice(0,10),m:d.toISOString().slice(0,7)}}
+function ensureBase(){if(!Object.keys(MK).length)return;const id=periodIds();SIM.base=SIM.base||{};let ch=false;if(SIM.base.w!==id.w){SIM.base.w=id.w;SIM.base.wv=simTotal();ch=true}if(SIM.base.m!==id.m){SIM.base.m=id.m;SIM.base.mv=simTotal();ch=true}if(ch&&SIM.log.length)saveSim()}
+function periodBases(){const id=periodIds(),b=SIM.base||{};return{wk:id.w,mk:id.m,wbase:b.w===id.w?b.wv:0,mbase:b.m===id.m?b.mv:0}}
+let LBP="week";
 async function loadLB(){
  lbDelShow();const el=$("#lbList");
  try{
-  const r=await fetch("/api/leaderboard");const d=await r.json();
-  if(!d.configured){el.innerHTML='<p class="lab" style="margin:0">The leaderboard is not switched on yet.</p>';$("#lbGo").disabled=true;return}
-  $("#lbGo").disabled=false;
-  el.innerHTML=d.top.length?`<table><thead><tr><th>#</th><th>Player</th><th>Best return</th><th>Portfolio</th></tr></thead><tbody>${d.top.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td class="mono">${pct(x.ret)}</td><td class="mono">${usd(START*(1+x.ret/100))}</td></tr>`).join("")}</tbody></table>`:'<p class="lab" style="margin:0">No scores yet. Be the first.</p>';
+  const r=await fetch("/api/leaderboard?period="+LBP);const d=await r.json();
+  if(!d.configured){el.innerHTML='<p class="lab" style="margin:0">The leaderboard is not switched on yet.</p>';$("#lbGo").disabled=true;$("#lbP").hidden=true;return}
+  $("#lbP").hidden=false;$("#lbGo").disabled=false;const all=LBP==="all";
+  $("#lbL").textContent=d.label+(all?" \u00b7 total return since the $10,000 start":" \u00b7 gain during the period");
+  el.innerHTML=d.top.length?`<table><thead><tr><th>#</th><th>Player</th><th>${all?"Return":"Gain"}</th>${all?"<th>Portfolio</th>":""}<th></th></tr></thead><tbody>${d.top.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td class="mono">${pct(x.ret)}</td>${all?`<td class="mono">${usd(START*(1+x.ret/100))}</td>`:""}<td><button class="rep" data-rep="${esc(x.name)}" aria-label="Report ${esc(x.name)}">Report</button></td></tr>`).join("")}</tbody></table>`:'<p class="lab" style="margin:0">No scores yet for this period. Be the first.</p>';
  }catch(e){el.innerHTML='<p class="lab" style="margin:0">Leaderboard unavailable right now.</p>';$("#lbGo").disabled=true}
 }
+$("#lbP").onclick=e=>{const b=e.target.closest("[data-p]");if(!b)return;LBP=b.dataset.p;[...$("#lbP").children].forEach(x=>x.setAttribute("aria-pressed",x===b));loadLB()};
+$("#lbList").onclick=async e=>{const b=e.target.closest("[data-rep]");if(!b)return;const n=b.dataset.rep;if(!confirm('Report "'+n+'" as offensive or misleading?'))return;const m=$("#lbMsg");m.textContent="Sending report...";
+ try{const r=await fetch("/api/leaderboard",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"report",name:n,token:getTok()})}),d=await r.json();m.textContent=r.ok?"Thanks. Your report was sent.":(d.error||"Could not send the report.");if(r.ok)loadLB()}catch(x){m.textContent="Could not send the report."}};
 $("#lbGo").onclick=async()=>{
  const name=$("#lbName").value.trim(),m=$("#lbMsg");
  if(!/^[A-Za-z0-9 _.-]{2,16}$/.test(name)){m.textContent="Use 2 to 16 letters, numbers, spaces, _ . or -";return}
@@ -698,7 +719,7 @@ $("#lbGo").onclick=async()=>{
  if(!$("#lbOk").checked){m.textContent="Please tick the consent box first.";return}
  m.textContent="Submitting...";
  try{
-  const r=await fetch("/api/leaderboard",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({name,value:simTotal(),token:getTok(),consent:true})});
+  const r=await fetch("/api/leaderboard",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({name,value:simTotal(),token:getTok(),consent:true,...periodBases()})});
   const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not submit.");
   try{localStorage.setItem("bwnick",name)}catch(e){}m.textContent="Score submitted.";loadLB();
  }catch(e){m.textContent=e.message}
@@ -714,7 +735,7 @@ const ago=ts=>{const m=Math.max(1,Math.round((Date.now()-ts)/6e4));return m<60?m
 function drawNews(){
  let it=NEWS.items.filter(i=>/^https:\/\//.test(i.link));if(nBtc){const b=it.filter(i=>i.btc);if(b.length)it=b}
  $("#nList").innerHTML=it.slice(0,20).map(i=>`<li><a href="${esc(i.link)}" target="_blank" rel="noopener noreferrer">${esc(i.title)}</a><div class="meta">${esc(i.source)}${i.ts?" &middot; "+ago(i.ts):""}</div></li>`).join("")||'<li class="lab">No headlines found.</li>';
- $("#nSrc").textContent="Sources: "+NEWS.sources.join(", ")+". Headlines link to the original publishers."}
+ $("#nSrc").textContent="Sources: "+NEWS.sources.join(", ")+". Headlines link to the original publishers."+(NEWS.stale?" Live feeds are unavailable, so these headlines were saved "+ago(NEWS.cachedAt)+".":"")}
 function nSet(b){nBtc=b;$("#nBtc").setAttribute("aria-pressed",b);$("#nAll").setAttribute("aria-pressed",!b);if(NEWS)drawNews()}
 $("#nBtc").onclick=()=>nSet(true);$("#nAll").onclick=()=>nSet(false);
 
@@ -835,7 +856,7 @@ if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0)addEventL
 /* ---------- Router ---------- */
 const PG=["dash","bitcoin","alts","learn","sim","alerts","news","tools","safety","gloss"],MAP={"":"dash","altcoins":"alts","glossary":"gloss","simulator":"sim"};
 function route(){let p=location.hash.replace(/^#\/?/,"");p=MAP[p]||p;if(!PG.includes(p))p="dash";
- PG.forEach(x=>$("#p-"+x).hidden=x!==p);document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.p===p));
+ PG.forEach(x=>$("#p-"+x).hidden=x!==p);document.title=p==="dash"?BASE_TITLE:TITLES[p]+" | Blockwise";document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.p===p));
  if(p==="learn"){$("#lsnView").hidden=true;$("#lsnList").hidden=false}if(p==="sim")loadLB();if(p==="news")loadNews();if(p==="tools")loadHist();scrollTo(0,0)}
 addEventListener("hashchange",route);
 

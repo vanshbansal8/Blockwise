@@ -50,3 +50,12 @@ This is a practical engineering checklist, **not legal advice**. Have a qualifie
 - **Crypto risk disclaimer (ASCI):** India's ad regulator requires the line "Crypto products and NFTs are unregulated and can be highly risky. There may be no regulatory recourse for any loss from such transactions." on advertisements for or featuring crypto, including every picture or video in social posts. It is in the site footer, the Terms and the story video. Put it on any other crypto promo you post (Instagram posts, reels, story images).
 - **Tax:** Blockwise gives no tax advice and states that Indian crypto tax rules are specific and change.
 - **Not legal advice:** please have an Indian lawyer review the policies before you rely on them, ideally before May 2027.
+
+## Moderation and resilience (added 10 Nov 2026)
+
+- **Leaderboard fairness:** separate weekly, monthly and all-time boards. Weekly and monthly rank each player's gain during that period, so newcomers can compete. Baselines are measured in the browser, so scores remain self-reported.
+- **Moderation:** nicknames are filtered (profanity, slurs, Hindi abuse, contact details, "admin"-style names). A Report button on every row hides a name once 3 different devices report it. To hide or unhide a name yourself, use the Upstash CLI: `SADD bw:hidden "lowercase name"` or `SREM bw:hidden "lowercase name"`. To remove a score: `ZREM bw:lb "Name"` (and the matching weekly/monthly key).
+- **Saved copies:** the server keeps the last good copy of prices, price history and headlines in your database (no personal data). If every live source fails, the site shows the saved copy with a clear notice instead of an error.
+- **Monitoring:** point a free uptime monitor (for example UptimeRobot) at `https://blockwise.cc.cd/api/health` and `https://blockwise.cc.cd/api/markets`.
+- **Share links:** `blockwise.cc.cd/p/simulator`, `/p/bitcoin`, `/p/learn`, `/p/news`, `/p/tools`, `/p/alerts`, `/p/safety`, `/p/glossary`, `/p/altcoins` each give their own preview title and image, then open that section.
+- **Privacy:** the policy now mentions report records (hash of device code, 30 days) and saved copies.
